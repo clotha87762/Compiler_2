@@ -50,7 +50,7 @@ struct literal_type{
 %right <ival> UMINUS
 %left <ival> PLUSPLUS MINUSMINUS
 
-%empty epsilon
+
 
 %{
 /* external function is defined here */
@@ -75,7 +75,7 @@ program : extdefs_no_func_x  first_func_def  extdefs_x    {printf("No syntax err
 var : IDEN indexs_x       {printf("1\n");}
   ;
 
-extdefs_no_func_x: epsilon         {printf("2\n");}
+extdefs_no_func_x: /* empty */        {printf("2\n");}
         |  extdefs_no_func          {printf("3\n");}
         ;
 
@@ -102,7 +102,7 @@ const_init : '=' literal        {printf("15\n");}
       ;
 
 
-extdefs_x: epsilon        {printf("16\n");}
+extdefs_x: /* empty */      {printf("16\n");}
     |  extdefs           {printf("17\n");}
     ;
 
@@ -117,7 +117,7 @@ extdef: type_void  IDEN '('  para_in ')' ';'     {printf("20\n");}  // function 
   | CONST type const_iden_list ';'        {printf("23\n");}
   ;
 
-decs_x : epsilon          {printf("24\n");}
+decs_x : /* empty */          {printf("24\n");}
      | decs               {printf("25\n");}
      ;
 
@@ -130,7 +130,7 @@ dec:   type iden_list_init  ';'       {printf("28\n");}
      | CONST type const_iden_list ';'     {printf("29\n");}
      ;
 
-expr_x : epsilon           {printf("30\n");}
+expr_x : /* empty */           {printf("30\n");}
     | expr                 {printf("31\n");}
     ;
 
@@ -184,7 +184,7 @@ expr_no_invoke:: literal   {printf("54\n");}
       ;
 
 
-stmts_x : epsilon    {printf("76\n");}
+stmts_x : /* empty */    {printf("76\n");}
     | stmts   {printf("77\n");}
     ;
 
@@ -223,7 +223,7 @@ cases: CASE CHAR_LIT ':' stmts_x   {printf("97\n");}
    | CASE INT_LIT ':' stmts_x     {printf("98\n");}
    ;  
 
-default_x: epsilon    {printf("99\n");}
+default_x: /* empty */    {printf("99\n");}
      |  DEFAULT ':' stmts_x   {printf("100\n");}
      ;
 
@@ -240,7 +240,7 @@ compound: '{'  decs_x  stmts_x '}'    {printf("105\n");}
 
 
 
-exprs_comma_x: epsilon     {printf("106\n");}
+exprs_comma_x: /* empty */    {printf("106\n");}
     | exprs_comma     {printf("107\n");}
     ;
 
@@ -248,7 +248,7 @@ exprs_comma: exprs_comma ',' expr     {printf("108\n");}
   | expr    {printf("109\n");}
   ;
 
-exprs_comma_no_invoke_x : epsilon    {printf("110\n");}
+exprs_comma_no_invoke_x : /* empty */    {printf("110\n");}
               | exprs_comma_no_invoke   {printf("111\n");}
               ;
 
@@ -257,15 +257,15 @@ exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke   {printf("112\
             ; 
 
 
-init_x : epsilon   {printf("114\n");}
+init_x : /* empty */   {printf("114\n");}
     | '=' expr_no_invoke  {printf("115\n");}
     ;
 
-array_init_x: epsilon  {printf("116\n");}
+array_init_x: /* empty */ {printf("116\n");}
       | '=' '{' exprs_comma_no_invoke_x '}'  {printf("117\n");}
       ;
 
-para_in :  epsilon  {printf("118\n");}
+para_in : /* empty */  {printf("118\n");}
     |  paras   {printf("119\n");}
     ;
 
@@ -276,7 +276,7 @@ paras:  paras ',' para  {printf("120\n");}
 para: type IDEN indexs_dec_x  {printf("122\n");}
    ;
 
-indexs_dec_x: epsilon  {printf("123\n");}
+indexs_dec_x: /* empty */ {printf("123\n");}
      |  indexs_dec  {printf("124\n");}
      ;
 
@@ -286,7 +286,7 @@ indexs_dec: indexs_dec  index_dec  {printf("125\n");}
 
 index_dec: '[' INT_LIT ']'  {printf("127\n");}
 
-indexs_x : epsilon   {printf("128\n");}
+indexs_x :/* empty */   {printf("128\n");}
     | indexs   {printf("129\n");}
     ;
 
