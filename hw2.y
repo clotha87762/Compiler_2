@@ -6,8 +6,6 @@
 %{
 #include <stdio.h>
 #include "SymbolTable.h"
-//extern int lineno;
-//extern FILE *f_asm;
 extern char* yytext;
 char   *install_symbol();
 
@@ -116,7 +114,7 @@ extdefs: extdefs extdef    {printf("18\n");}
 extdef: type_void  IDEN '('  para_in ')' ';'     {printf("20\n");}  // function declaration
   | func_def                 {printf("21\n");}
   | type iden_list_init  ';'       {printf("22\n");}
-  | CONST const_iden_list ';'        {printf("23\n");}
+  | CONST type const_iden_list ';'        {printf("23\n");}
   ;
 
 decs_x : epsilon          {printf("24\n");}
@@ -129,7 +127,7 @@ decs :  decs  dec        {printf("26\n");}
    ;
 
 dec:   type iden_list_init  ';'       {printf("28\n");}
-     | CONST const_iden_list ';'     {printf("29\n");}
+     | CONST type const_iden_list ';'     {printf("29\n");}
      ;
 
 expr_x : epsilon           {printf("30\n");}
@@ -230,7 +228,7 @@ default_x: epsilon    {printf("99\n");}
      ;
 
 func_invoke: IDEN '('  exprs_comma_x ')' ';'     {printf("101\n");}
-       | var = IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
+       | var '='' IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
        ;
 
 
@@ -286,7 +284,7 @@ indexs_dec: indexs_dec  index_dec  {printf("125\n");}
     | index_dec  {printf("126\n");}
     ;
 
-index_dec: '[' INT_CONSTANT ']'  {printf("127\n");}
+index_dec: '[' INT_LIT ']'  {printf("127\n");}
 
 indexs_x : epsilon   {printf("128\n");}
     | indexs   {printf("129\n");}
