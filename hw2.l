@@ -78,7 +78,7 @@ ISUFIX	[uUlL]|(ll)|(LL)
 "bool"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return BOOL;}
 "char"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CHAR;}
 "null"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
-"for"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return NULL;}
+"for"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return NUL;}
 "while"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return WHILE;}
 "do"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return DO;}
 "if"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return IF;}

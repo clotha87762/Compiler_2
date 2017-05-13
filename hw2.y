@@ -6,8 +6,8 @@
 %{
 #include <stdio.h>
 #include "SymbolTable.h"
-extern int lineno;
-extern FILE *f_asm;
+//extern int lineno;
+//extern FILE *f_asm;
 extern char* yytext;
 char   *install_symbol();
 
@@ -35,7 +35,7 @@ struct literal_type{
 %token <sval>  IDEN  STRING_LIT
 %token <ival> INT_LIT BOOL_LIT 
 %token <ival> INT DOUBLE BOOL CHAR VOID STRUCT
-%token <ival> CONST SWITCH CASE DEFAULT IF ELSE FOR WHILE DO RETURN CONTINUE BREAK NULL
+%token <ival> CONST SWITCH CASE DEFAULT IF ELSE FOR WHILE DO RETURN CONTINUE BREAK NUL
 %token <ival> PLUSPLUS MINUSMINUS ANDAND OROR GE LE EQUAL NOTEQUAL NOT
 %token <cval> CHAR_LIT 
 %token <dval> DOUBLE_LIT
@@ -87,7 +87,7 @@ extdefs_no_func : extdefs_no_func  extdef_no_func        {printf("4\n");}
 
 extdef_no_func: type_void  IDEN '('  para_in ')' ';'    {printf("6\n");}   // function declaration
   | type iden_list_init  ';'    {printf("7\n");}
-  | CONST const_iden_list ';'      {printf("8\n");}
+  | CONST type const_iden_list ';'      {printf("8\n");}
   ;
 
 iden_list_init: iden_list_init ','  IDEN init_x           {printf("9\n");}
