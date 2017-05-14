@@ -68,31 +68,40 @@ int TRACEON = 100;
 
 
 
-program : extdefs_no_func_x  first_func_def  extdefs_x    {printf("No syntax error!\n");}
-    ;
+program :  first_func_def  extdefs    {printf("No syntax error!\n");}
+    	|  extdefs_no_func  first_func_def extdefs	{}
+	| first_func_def  
+	|  extdefs_no_func first_func_def 
+	;
 
 
-var : IDEN indexs_x       {printf("1\n");}
-  ;
+var : IDEN indexs       {printf("1\n");}
+   | IDEN 
+   ;
 
-extdefs_no_func_x: /* empty */        {printf("2\n");}
-        |  extdefs_no_func          {printf("3\n");}
-        ;
+//extdefs_no_func_x: /* empty */        {printf("2\n");}
+ //       |  extdefs_no_func          {printf("3\n");}
+//        ;
 
 extdefs_no_func : extdefs_no_func  extdef_no_func        {printf("4\n");}
         | extdef_no_func            {printf("5\n");}
         ; 
 
-extdef_no_func: type_void  IDEN '('  para_in ')' ';'    {printf("6\n");}   // function declaration
+extdef_no_func: type  IDEN '('  para_in ')' ';'    {printf("6\n");}   // function declaration
+  | VOID  IDEN '('  para_in ')' ';'    {printf("6\n");}  
   | type iden_list_init  ';'    {printf("7\n");}
   | CONST type const_iden_list ';'      {printf("8\n");}
   ;
 
-iden_list_init: iden_list_init ','  IDEN init_x           {printf("9\n");}
-        | iden_list_init ','  IDEN indexs_dec_x array_init_x       {printf("10\n");}
-        | IDEN init_x               {printf("11\n");}
-        | IDEN indexs_dec_x array_init_x        {printf("12\n");}
-        ;
+iden_list_init: iden_list_init ','  IDEN            {printf("9\n");}
+	| iden_list_init ',' IDEN init
+	| iden_list_init ','  IDEN indexs_dec array_init       {printf("10\n");}
+        | iden_list_init ','  IDEN indexs_dec 
+	| IDEN init               {printf("11\n");}
+        | IDEN
+	| IDEN indexs_dec array_init        {printf("12\n");}
+        | IDEN indexs_dec 
+	;
 
 const_iden_list : const_iden_list ','  IDEN const_init     {printf("13\n");}
         | IDEN const_init            {printf("14\n");}
@@ -102,16 +111,17 @@ const_init : '=' literal        {printf("15\n");}
       ;
 
 
-extdefs_x: /* empty */      {printf("16\n");}
-    |  extdefs           {printf("17\n");}
-    ;
+//extdefs_x: /* empty */      {printf("16\n");}
+//    |  extdefs           {printf("17\n");}
+//    ;
 
 extdefs: extdefs extdef    {printf("18\n");}
     | extdef               {printf("19\n");}
     ; 
 
 
-extdef: type_void  IDEN '('  para_in ')' ';'     {printf("20\n");}  // function declaration
+extdef: type  IDEN '('  para_in ')' ';'     {printf("20\n");}  // function declaration
+  | VOID  IDEN '('  para_in ')' ';'     {printf("20\n");}  // function declaration
   | func_def                 {printf("21\n");}
   | type iden_list_init  ';'       {printf("22\n");}
   | CONST type const_iden_list ';'        {printf("23\n");}
@@ -134,11 +144,13 @@ expr_x : /* empty */           {printf("30\n");}
     | expr                 {printf("31\n");}
     ;
 
-expr: literal
+expr: literal               {}
   | var                     {printf("32\n");}
-  | var PLUSPLUS            {printf("33\n");}
+  | var PLUSPLUS           {printf("33\n");}
   | var MINUSMINUS          {printf("34\n");}
-  | func_invoke            {printf("35\n");}
+//  | func_invoke            {printf("35\n");}
+  | IDEN '(' exprs_comma_x ')' ';'  {}
+  | var '=' IDEN '(' exprs_comma_x ')' ';' {printf("qq\n");} 
   | expr '+' expr          {printf("36\n");}
   |  expr '-' expr         {printf("37\n");}
   |  expr '*' expr         {printf("38\n");}
@@ -155,33 +167,35 @@ expr: literal
   |  expr OROR expr         {printf("49\n");}
   |  '-' expr %prec UMINUS   {printf("50\n");}
   | '(' expr ')'            {printf("51\n");}
-  | '(' var ')' PLUSPLUS    {printf("52\n");}
-  | '(' var ')' MINUSMINUS  {printf("53\n");}
+  //| '(' var ')' PLUSPLUS    {printf("52\n");}
+  //| '(' var ')' MINUSMINUS  {printf("53\n");}
   ; 
 
-expr_no_invoke:: literal   {printf("54\n");}
-      | var               {printf("55\n");}
-      | var PLUSPLUS       {printf("56\n");}
-      | var MINUSMINUS     {printf("57\n");}
-      | expr '+' expr      {printf("58\n");}
-      |  expr '-' expr     {printf("59\n");}
-      |  expr '*' expr     {printf("60\n");}
-      |  expr '/' expr     {printf("61\n");}
-      |  expr '%' expr    {printf("62\n");}
-      |  expr '>' expr    {printf("63\n");}
-      |  expr '<' expr    {printf("64\n");}
-      |  expr GE expr     {printf("65\n");}
-      |  expr LE expr     {printf("66\n");}
-      |  expr EQUAL expr     {printf("67\n");}
-      |  expr NOTEQUAL expr    {printf("68\n");}
-      |  NOT expr    {printf("69\n");}
-      |  expr ANDAND expr   {printf("70\n");}
-      |  expr OROR expr    {printf("71\n");}
-      |  '-' expr %prec UMINUS   {printf("72\n");}
-      | '(' expr ')'    {printf("73\n");}
-      | '(' var ')' PLUSPLUS    {printf("74\n");}
-      | '(' var ')' MINUSMINUS  {printf("75\n");}
-      ;
+expr_no_invoke: literal     {}
+  | var                     {printf("32\n");}
+  | var PLUSPLUS            {printf("33\n");}
+  | var MINUSMINUS          {printf("34\n");}
+  | expr '+' expr          {printf("36\n");}
+  |  expr '-' expr         {printf("37\n");}
+  |  expr '*' expr         {printf("38\n");}
+  |  expr '/' expr         {printf("39\n");}
+  |  expr '%' expr          {printf("40\n");}
+  |  expr '>' expr          {printf("41\n");}
+  |  expr '<' expr          {printf("42\n");}
+  |  expr GE expr           {printf("43\n");}
+  |  expr LE expr          {printf("44\n");}
+  |  expr EQUAL expr       {printf("45\n");}
+  |  expr NOTEQUAL expr    {printf("46\n");}
+  |  NOT expr             {printf("47\n");}
+  |  expr ANDAND expr     {printf("48\n");}
+  |  expr OROR expr         {printf("49\n");}
+  |  '-' expr %prec UMINUS   {printf("50\n");}
+  | '(' expr ')'            {printf("51\n");}
+  //| '(' var ')' PLUSPLUS    {printf("52\n");}
+  //| '(' var ')' MINUSMINUS  {printf("53\n");}
+  ;
+
+
 
 
 stmts_x : /* empty */    {printf("76\n");}
@@ -197,7 +211,9 @@ stmt: var '=' expr    {printf("80\n");}
   |  while_stmt     {printf("82\n");}
   |  switch_stmt    {printf("83\n");}
   |  for_stmt      {printf("84\n");}
-  | func_invoke     {printf("85\n");}
+  //| func_invoke     {printf("85\n");}
+  | var = IDEN '(' exprs_comma_x ')' ';'
+  | IDEN '(' exprs_comma_x ')' ';'
   | RETURN expr ';'   {printf("86\n");}
   | BREAK ';'       {printf("87\n");}
   | CONTINUE ';'    {printf("88\n");}
@@ -207,19 +223,19 @@ if_stmt: IF '(' expr ')' compound             {printf("89\n");}
     | IF '(' expr ')' compound ELSE compound   {printf("90\n");}
     ;
 
-while_stmt: WHILE '( expr ')' compound      {printf("91\n");}
+while_stmt: WHILE '(' expr ')' compound      {printf("91\n");}
       | DO compound WHILE '(' expr ')' ';'  {printf("92\n");}
       ;
  
 for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x  ')' compound   {printf("93\n");}
-
+         ;
 switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x '}'   {printf("94\n");}
-
+	;
 cases: cases case  {printf("95\n");}
    | case         {printf("96\n");}
    ;
 
-cases: CASE CHAR_LIT ':' stmts_x   {printf("97\n");}
+case: CASE CHAR_LIT ':' stmts_x   {printf("97\n");}
    | CASE INT_LIT ':' stmts_x     {printf("98\n");}
    ;  
 
@@ -227,17 +243,19 @@ default_x: /* empty */    {printf("99\n");}
      |  DEFAULT ':' stmts_x   {printf("100\n");}
      ;
 
-func_invoke: IDEN '('  exprs_comma_x ')' ';'     {printf("101\n");}
-       | var '='' IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
-       ;
+//func_invoke: IDEN '('  exprs_comma_x ')' ';'     {printf("101\n");}
+//       | var '=' IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
+//       ;
 
 
-first_func_def : type_void IDEN '(' para_in ')' compound  {printf("103\n");}
-
-func_def: type_void IDEN '(' para_in ')' compound   {printf("104\n");}
-
-compound: '{'  decs_x  stmts_x '}'    {printf("105\n");}
-
+first_func_def : type IDEN '(' para_in ')' compound  {printf("103\n");}
+	       |  VOID  IDEN '(' para_in ')' compound 
+		;
+func_def: type IDEN '(' para_in ')' compound   {printf("104\n");}
+	| VOID  IDEN '(' para_in ')' compound 
+	;
+compound: '{'  decs_x stmts_x  '}'    {printf("105\n");}
+	;
 
 
 exprs_comma_x: /* empty */    {printf("106\n");}
@@ -257,12 +275,10 @@ exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke   {printf("112\
             ; 
 
 
-init_x : /* empty */   {printf("114\n");}
-    | '=' expr_no_invoke  {printf("115\n");}
+init :  '=' expr_no_invoke  {printf("115\n");}
     ;
 
-array_init_x: /* empty */ {printf("116\n");}
-      | '=' '{' exprs_comma_no_invoke_x '}'  {printf("117\n");}
+array_init: '=' '{' exprs_comma_no_invoke_x '}'  {printf("117\n");}
       ;
 
 para_in : /* empty */  {printf("118\n");}
@@ -273,22 +289,23 @@ paras:  paras ',' para  {printf("120\n");}
    |  para  {printf("121\n");}
    ;
 
-para: type IDEN indexs_dec_x  {printf("122\n");}
+para: type IDEN indexs_dec  {printf("122\n");}
+   |  type IDEN
    ;
 
-indexs_dec_x: /* empty */ {printf("123\n");}
-     |  indexs_dec  {printf("124\n");}
-     ;
+//indexs_dec_x: /* empty */ {printf("123\n");}
+//     |  indexs_dec  {printf("124\n");}
+//     ;
 
 indexs_dec: indexs_dec  index_dec  {printf("125\n");}
     | index_dec  {printf("126\n");}
     ;
 
 index_dec: '[' INT_LIT ']'  {printf("127\n");}
-
-indexs_x :/* empty */   {printf("128\n");}
-    | indexs   {printf("129\n");}
-    ;
+	;
+//indexs_x :/* empty */   {printf("128\n");}
+//    | indexs   {printf("129\n");}
+//    ;
 
 indexs: indexs index  {printf("130\n");}
     | index   {printf("131\n");}
@@ -302,14 +319,8 @@ type : INT    {printf("133\n");}
     | DOUBLE   {printf("134\n");}
     | CHAR    {printf("135\n");}
     | BOOL    {printf("136\n");}
-    ;
-
-type_void : INT  {printf("137\n");}
-      | DOUBLE  {printf("138\n");}
-      | CHAR  {printf("139\n");}
-      | BOOL {printf("140\n");}
-      | VOID {printf("141\n");}
-      ;
+    ; 
+ 
 
 literal: CHAR_LIT {printf("142\n");}
      | INT_LIT    {printf("143\n");}
