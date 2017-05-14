@@ -159,7 +159,7 @@ expr: literal
   | '(' var ')' MINUSMINUS  {printf("53\n");}
   ; 
 
-expr_no_invoke:: literal   {printf("54\n");}
+expr_no_invoke: literal   {printf("54\n");}
       | var               {printf("55\n");}
       | var PLUSPLUS       {printf("56\n");}
       | var MINUSMINUS     {printf("57\n");}
@@ -207,7 +207,7 @@ if_stmt: IF '(' expr ')' compound             {printf("89\n");}
     | IF '(' expr ')' compound ELSE compound   {printf("90\n");}
     ;
 
-while_stmt: WHILE '( expr ')' compound      {printf("91\n");}
+while_stmt: WHILE '('' expr ')' compound      {printf("91\n");}
       | DO compound WHILE '(' expr ')' ';'  {printf("92\n");}
       ;
  
@@ -219,7 +219,7 @@ cases: cases case  {printf("95\n");}
    | case         {printf("96\n");}
    ;
 
-cases: CASE CHAR_LIT ':' stmts_x   {printf("97\n");}
+case: CASE CHAR_LIT ':' stmts_x   {printf("97\n");}
    | CASE INT_LIT ':' stmts_x     {printf("98\n");}
    ;  
 
@@ -228,7 +228,7 @@ default_x: /* empty */    {printf("99\n");}
      ;
 
 func_invoke: IDEN '('  exprs_comma_x ')' ';'     {printf("101\n");}
-       | var '='' IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
+       | var '=' IDEN '(' exprs_comma_x ')' ';'     {printf("102\n");}          //  這邊我把 IDEN -> VAR
        ;
 
 
