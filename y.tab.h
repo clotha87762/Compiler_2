@@ -21,18 +21,20 @@
 #define CONTINUE 277
 #define BREAK 278
 #define NUL 279
-#define PLUSPLUS 280
-#define MINUSMINUS 281
-#define ANDAND 282
-#define OROR 283
-#define GE 284
-#define LE 285
-#define EQUAL 286
-#define NOTEQUAL 287
-#define NOT 288
-#define CHAR_LIT 289
-#define DOUBLE_LIT 290
-#define UMINUS 291
+#define TRUE 280
+#define FALSE 281
+#define PLUSPLUS 282
+#define MINUSMINUS 283
+#define ANDAND 284
+#define OROR 285
+#define GE 286
+#define LE 287
+#define EQUAL 288
+#define NOTEQUAL 289
+#define NOT 290
+#define CHAR_LIT 291
+#define DOUBLE_LIT 292
+#define UMINUS 293
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1

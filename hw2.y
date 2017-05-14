@@ -217,7 +217,7 @@ stmt: var '=' expr    {printf("80\n");}
   |  switch_stmt    {printf("83\n");}
   |  for_stmt      {printf("84\n");}
   //| func_invoke     {printf("85\n");}
-  | var '=' IDEN '(' exprs_comma_x ')' ';'
+//  | var  '=' IDEN '(' exprs_comma_x ')' ';'
   | IDEN '(' exprs_comma_x ')' ';'
   | RETURN expr ';'   {printf("86\n");}
   | BREAK ';'       {printf("87\n");}
