@@ -12,8 +12,8 @@ char lineBuffer[50000];
 int srcOn = 1;
 int tokenOn = 1;
 typedef enum {
-	KEY,ID,OP,PUNC,INTEGER,DOUBLE,CHARACTER,SCI,STRING
-}type;
+	KEY,ID,OP,PUNC,INTEGER,L_DOUBLE,CHARACTER,SCI,STRING
+}PTYPE;
 
 void PrintEOFSrc();
 void PutToBuffer(char* token);
@@ -22,6 +22,8 @@ void PrintSrc();
 void PrintToken(type t,char* text);
 void PrintEOFSrc();
 void Error();
+char * copys(char* c);
+char * copyn(register int n, register char *s;)
 
 %}
 
@@ -78,20 +80,20 @@ ISUFIX	[uUlL]|(ll)|(LL)
 "bool"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return BOOL;}
 "char"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CHAR;}
 "null"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
-"for"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return NULL;}
+"for"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return NUL;}
 "while"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return WHILE;}
 "do"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return DO;}
 "if"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return IF;}
 "else"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return ELSE;}
 "switch"		{PutToBuffer(yytext);PrintToken(KEY,yytext);  return SWITCH;}
 "return"		{PutToBuffer(yytext);PrintToken(KEY,yytext);  return RETURN;}
-"break"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return break;}
+"break"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return BREAK;}
 "continue"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CONTINUE;}
 "const"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CONST;}
-"true"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return TRUE;}
-"false"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return FALSE;}
+"true"		{PutToBuffer(yytext);PrintToken(KEY,yytext); yylval.lit.type = 4; yylval.lit.bval = 1;  return BOOL_LIT;}
+"false"		{PutToBuffer(yytext);PrintToken(KEY,yytext); yylval.lit.type = 4; yylval.lit.bval = 0; return BOOL_LIT;}
 "struct"		{PutToBuffer(yytext);PrintToken(KEY,yytext);  return STRUCT;}
-"case"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CASEL}
+"case"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CASE;}
 "default"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return DEFAULT;}
 
 "clearerr"	{PutToBuffer(yytext);PrintToken(KEY,yytext); yylval.sval = copys(yytext); return IDEN;}
@@ -156,8 +158,8 @@ ISUFIX	[uUlL]|(ll)|(LL)
 
 
 0{digit}+{ISUFIX}?				{/*printf("invalid integer!\n");*/Error();}
-[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lt_type.ival = atoi(yytext); return INT_LIT;}
-0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lt_type.ival = atoi(yytext); return INT_LIT;}
+[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lit_type.ival = atoi(yytext); return INT_LIT;}
+0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lit_type.ival = atoi(yytext); return INT_LIT;}
 
 
 {digit}+({alpha}|_)+		{Error();}
@@ -171,9 +173,9 @@ ISUFIX	[uUlL]|(ll)|(LL)
 {digit}+[eE][+-]?{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
 {digit}+[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("SCI Error\n");*/Error();}
 
-{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
 {digit}+\.{digit}*{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
-\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
 \.{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
 
 
@@ -280,7 +282,7 @@ void PrintToken(type t,char* text){
 			case INTEGER:
 				printf("#integer:%s\n",text);
 				break;
-			case DOUBLE:
+			case L_DOUBLE:
 				printf("#double:%s\n",text);
 				break;
 			case CHARACTER:
@@ -317,10 +319,7 @@ void Error(){
 }
 
 
-char   *
-copyn(n, s)
-	register int n;
-	register char *s;
+char   * copyn(register int n, register char *s)
 {
 	register char *p, *q;
 	//char   *calloc();
@@ -341,9 +340,7 @@ copyn(n, s)
  * output:
  *	  pointer to the new string
  */
-char   *
-copys(s)
-	char   *s;
+char   * copys(char* s)
 {
 	return (copyn(strlen(s) + 1, s));
 }
