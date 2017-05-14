@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include "SymbolTable.h"
 extern char* yytext;
+extern int lineCount;
+extern char lineBuffer[50000];
 char   *install_symbol();
 
 struct literal_type{
@@ -215,7 +217,7 @@ stmt: var '=' expr    {printf("80\n");}
   |  switch_stmt    {printf("83\n");}
   |  for_stmt      {printf("84\n");}
   //| func_invoke     {printf("85\n");}
-  | var = IDEN '(' exprs_comma_x ')' ';'
+  | var '=' IDEN '(' exprs_comma_x ')' ';'
   | IDEN '(' exprs_comma_x ')' ';'
   | RETURN expr ';'   {printf("86\n");}
   | BREAK ';'       {printf("87\n");}
@@ -356,8 +358,8 @@ int main(void)
  */
 void  yyerror(char* msg)
 {
-   fprintf( stderr, "*** Error at line %d: %s\n", linenum, buff );
-   printf( stderr, "\n" );
+   fprintf( stderr, "*** Error at line %d: %s\n", linenum, lineBuffer );
+   fprintf( stderr, "\n" );
    fprintf( stderr, "Unmatched token: %s\n", yytext );
    fprintf( stderr, "*** syntax error\n"); 
    exit(-1); 
