@@ -5,23 +5,14 @@
 
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include "SymbolTable.h"
+#include "lit_type.h"
+
 extern char* yytext;
 extern int lineCount;
 extern char lineBuffer[50000];
 char   *install_symbol();
-
-struct literal_type{
-  int type; // 0 -> int ; 1-> double ; 2-> char  ; 3-> char*  4-> bool
-  int ival;
-  char cval;
-  double dval;
-  char* sval;
-  int bval;
-};
-
-typedef struct literal_type lit_type;
-
 %}
 
 %start program
@@ -73,9 +64,9 @@ int TRACEON = 100;
 
 
 program :  first_func_def  extdefs    {printf("No syntax error!\n");}
-    	|  extdefs_no_func  first_func_def extdefs	{}
-	| first_func_def  
-	|  extdefs_no_func first_func_def 
+    	|  extdefs_no_func  first_func_def extdefs	{printf("No syntax error!\n");}
+	| first_func_def  {printf("No syntax error!\n");}
+	|  extdefs_no_func first_func_def {printf("No syntax error!\n");}
 	;
 
 
@@ -153,8 +144,8 @@ expr: literal               {}
   | var PLUSPLUS           {printf("33\n");}
   | var MINUSMINUS          {printf("34\n");}
 //  | func_invoke            {printf("35\n");}
-  | IDEN '(' exprs_comma_x ')' ';'  {}
-  | var '=' IDEN '(' exprs_comma_x ')' ';' {printf("qq\n");} 
+  | IDEN '(' exprs_comma_x ')'   {}
+ // | var '=' IDEN '(' exprs_comma_x ')'  {printf("qq\n");} 
   | expr '+' expr          {printf("36\n");}
   |  expr '-' expr         {printf("37\n");}
   |  expr '*' expr         {printf("38\n");}
@@ -181,22 +172,22 @@ expr_no_invoke: literal     {}
   | var                     {printf("32\n");}
   | var PLUSPLUS            {printf("33\n");}
   | var MINUSMINUS          {printf("34\n");}
-  | expr '+' expr          {printf("36\n");}
-  |  expr '-' expr         {printf("37\n");}
-  |  expr '*' expr         {printf("38\n");}
-  |  expr '/' expr         {printf("39\n");}
-  |  expr '%' expr          {printf("40\n");}
-  |  expr '>' expr          {printf("41\n");}
-  |  expr '<' expr          {printf("42\n");}
-  |  expr GE expr           {printf("43\n");}
-  |  expr LE expr          {printf("44\n");}
-  |  expr EQUAL expr       {printf("45\n");}
-  |  expr NOTEQUAL expr    {printf("46\n");}
-  |  NOT expr             {printf("47\n");}
-  |  expr ANDAND expr     {printf("48\n");}
-  |  expr OROR expr         {printf("49\n");}
-  |  '-' expr %prec UMINUS   {printf("50\n");}
-  | '(' expr ')'            {printf("51\n");}
+  | expr_no_invoke '+' expr_no_invoke          {printf("36\n");}
+  |  expr_no_invoke '-' expr_no_invoke         {printf("37\n");}
+  |  expr_no_invoke '*' expr_no_invoke         {printf("38\n");}
+  |  expr_no_invoke '/' expr_no_invoke         {printf("39\n");}
+  |  expr_no_invoke '%' expr_no_invoke          {printf("40\n");}
+  |  expr_no_invoke '>' expr_no_invoke          {printf("41\n");}
+  |  expr_no_invoke '<' expr_no_invoke          {printf("42\n");}
+  |  expr_no_invoke GE expr_no_invoke           {printf("43\n");}
+  |  expr_no_invoke LE expr_no_invoke          {printf("44\n");}
+  |  expr_no_invoke EQUAL expr_no_invoke       {printf("45\n");}
+  |  expr_no_invoke NOTEQUAL expr_no_invoke    {printf("46\n");}
+  |  NOT expr_no_invoke             {printf("47\n");}
+  |  expr_no_invoke ANDAND expr_no_invoke     {printf("48\n");}
+  |  expr_no_invoke OROR expr_no_invoke         {printf("49\n");}
+  |  '-' expr_no_invoke %prec UMINUS   {printf("50\n");}
+  | '(' expr_no_invoke ')'            {printf("51\n");}
   //| '(' var ')' PLUSPLUS    {printf("52\n");}
   //| '(' var ')' MINUSMINUS  {printf("53\n");}
   ;
@@ -211,22 +202,23 @@ stmts:  stmts  stmt   {printf("78\n");}
     | stmt     {printf("79\n");}
     ;
 
-stmt: var '=' expr    {printf("80\n");}
+stmt: var '=' expr ';'    {printf("80\n");}
   |  if_stmt        {printf("81\n");}
   |  while_stmt     {printf("82\n");}
   |  switch_stmt    {printf("83\n");}
   |  for_stmt      {printf("84\n");}
   //| func_invoke     {printf("85\n");}
-//  | var  '=' IDEN '(' exprs_comma_x ')' ';'
-  | IDEN '(' exprs_comma_x ')' ';'
+  //| var  '=' IDEN '(' exprs_comma_x ')' ';'
+  //| IDEN '(' exprs_comma_x ')' ';'
   | RETURN expr ';'   {printf("86\n");}
   | BREAK ';'       {printf("87\n");}
   | CONTINUE ';'    {printf("88\n");}
   ;
 
-if_stmt: IF '(' expr ')' compound             {printf("89\n");}
-    | IF '(' expr ')' compound ELSE compound   {printf("90\n");}
-    ;
+
+if_stmt: IF '(' expr ')' compound ELSE compound   {printf("90\n");}
+     	| IF '(' expr ')' compound {}
+	;
 
 
 while_stmt: WHILE '(' expr ')' compound      {printf("91\n");}
@@ -358,7 +350,7 @@ int main(void)
  */
 void  yyerror(char* msg)
 {
-   fprintf( stderr, "*** Error at line %d: %s\n", linenum, lineBuffer );
+   fprintf( stderr, "*** Error at line %d: %s\n", lineCount, lineBuffer );
    fprintf( stderr, "\n" );
    fprintf( stderr, "Unmatched token: %s\n", yytext );
    fprintf( stderr, "*** syntax error\n"); 
