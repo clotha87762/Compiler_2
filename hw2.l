@@ -4,6 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+struct literal_type{
+  int type; // 0 -> int ; 1-> double ; 2-> char  ; 3-> char*  4-> bool
+  int ival;
+  char cval;
+  double dval;
+  char* sval;
+  int bval;
+};
+
+typedef struct literal_type lit_type;
+
 #include "y.tab.h"
 
 int lineCount = 1;
