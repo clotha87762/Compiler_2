@@ -105,82 +105,83 @@
   86       | while_stmt
   87       | switch_stmt
   88       | for_stmt
-  89       | RETURN expr ';'
-  90       | BREAK ';'
-  91       | CONTINUE ';'
+  89       | IDEN '(' exprs_comma_x ')' ';'
+  90       | RETURN expr ';'
+  91       | BREAK ';'
+  92       | CONTINUE ';'
 
-  92  if_stmt : IF '(' expr ')' compound ELSE compound
-  93          | IF '(' expr ')' compound
+  93  if_stmt : IF '(' expr ')' compound ELSE compound
+  94          | IF '(' expr ')' compound
 
-  94  while_stmt : WHILE '(' expr ')' compound
-  95             | DO compound WHILE '(' expr ')' ';'
+  95  while_stmt : WHILE '(' expr ')' compound
+  96             | DO compound WHILE '(' expr ')' ';'
 
-  96  for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' compound
+  97  for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' compound
 
-  97  switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x '}'
+  98  switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x '}'
 
-  98  cases : cases case
-  99        | case
+  99  cases : cases case
+ 100        | case
 
- 100  case : CASE CHAR_LIT ':' stmts_x
- 101       | CASE INT_LIT ':' stmts_x
+ 101  case : CASE CHAR_LIT ':' stmts_x
+ 102       | CASE INT_LIT ':' stmts_x
 
- 102  default_x :
- 103            | DEFAULT ':' stmts_x
+ 103  default_x :
+ 104            | DEFAULT ':' stmts_x
 
- 104  first_func_def : type IDEN '(' para_in ')' compound
- 105                 | VOID IDEN '(' para_in ')' compound
+ 105  first_func_def : type IDEN '(' para_in ')' compound
+ 106                 | VOID IDEN '(' para_in ')' compound
 
- 106  func_def : type IDEN '(' para_in ')' compound
- 107           | VOID IDEN '(' para_in ')' compound
+ 107  func_def : type IDEN '(' para_in ')' compound
+ 108           | VOID IDEN '(' para_in ')' compound
 
- 108  compound : '{' decs_x stmts_x '}'
+ 109  compound : '{' decs_x stmts_x '}'
 
- 109  exprs_comma_x :
- 110                | exprs_comma
+ 110  exprs_comma_x :
+ 111                | exprs_comma
 
- 111  exprs_comma : exprs_comma ',' expr
- 112              | expr
+ 112  exprs_comma : exprs_comma ',' expr
+ 113              | expr
 
- 113  exprs_comma_no_invoke_x :
- 114                          | exprs_comma_no_invoke
+ 114  exprs_comma_no_invoke_x :
+ 115                          | exprs_comma_no_invoke
 
- 115  exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke
- 116                        | expr_no_invoke
+ 116  exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke
+ 117                        | expr_no_invoke
 
- 117  init : '=' expr_no_invoke
+ 118  init : '=' expr_no_invoke
 
- 118  array_init : '=' '{' exprs_comma_no_invoke_x '}'
+ 119  array_init : '=' '{' exprs_comma_no_invoke_x '}'
 
- 119  para_in :
- 120          | paras
+ 120  para_in :
+ 121          | paras
 
- 121  paras : paras ',' para
- 122        | para
+ 122  paras : paras ',' para
+ 123        | para
 
- 123  para : type IDEN indexs_dec
- 124       | type IDEN
+ 124  para : type IDEN indexs_dec
+ 125       | type IDEN
 
- 125  indexs_dec : indexs_dec index_dec
- 126             | index_dec
+ 126  indexs_dec : indexs_dec index_dec
+ 127             | index_dec
 
- 127  index_dec : '[' INT_LIT ']'
+ 128  index_dec : '[' INT_LIT ']'
 
- 128  indexs : indexs index
- 129         | index
+ 129  indexs : indexs index
+ 130         | index
 
- 130  index : '[' expr ']'
+ 131  index : '[' expr ']'
 
- 131  type : INT
- 132       | DOUBLE
- 133       | CHAR
- 134       | BOOL
+ 132  type : INT
+ 133       | DOUBLE
+ 134       | CHAR
+ 135       | BOOL
 
- 135  literal : CHAR_LIT
- 136          | INT_LIT
- 137          | DOUBLE_LIT
- 138          | BOOL_LIT
- 139          | STRING_LIT
+ 136  literal : CHAR_LIT
+ 137          | INT_LIT
+ 138          | DOUBLE_LIT
+ 139          | BOOL_LIT
+ 140          | STRING_LIT
 
 state 0
 	$accept : . program $end  (0)
@@ -201,32 +202,32 @@ state 0
 
 
 state 1
-	type : INT .  (131)
-
-	.  reduce 131
-
-
-state 2
-	type : DOUBLE .  (132)
+	type : INT .  (132)
 
 	.  reduce 132
 
 
-state 3
-	type : BOOL .  (134)
-
-	.  reduce 134
-
-
-state 4
-	type : CHAR .  (133)
+state 2
+	type : DOUBLE .  (133)
 
 	.  reduce 133
 
 
+state 3
+	type : BOOL .  (135)
+
+	.  reduce 135
+
+
+state 4
+	type : CHAR .  (134)
+
+	.  reduce 134
+
+
 state 5
 	extdef_no_func : VOID . IDEN '(' para_in ')' ';'  (10)
-	first_func_def : VOID . IDEN '(' para_in ')' compound  (105)
+	first_func_def : VOID . IDEN '(' para_in ')' compound  (106)
 
 	IDEN  shift 12
 	.  error
@@ -295,7 +296,7 @@ state 10
 state 11
 	extdef_no_func : type . IDEN '(' para_in ')' ';'  (9)
 	extdef_no_func : type . iden_list_init ';'  (11)
-	first_func_def : type . IDEN '(' para_in ')' compound  (104)
+	first_func_def : type . IDEN '(' para_in ')' compound  (105)
 
 	IDEN  shift 22
 	.  error
@@ -305,7 +306,7 @@ state 11
 
 state 12
 	extdef_no_func : VOID IDEN . '(' para_in ')' ';'  (10)
-	first_func_def : VOID IDEN . '(' para_in ')' compound  (105)
+	first_func_def : VOID IDEN . '(' para_in ')' compound  (106)
 
 	'('  shift 24
 	.  error
@@ -322,7 +323,7 @@ state 13
 
 state 14
 	extdef : VOID . IDEN '(' para_in ')' ';'  (27)
-	func_def : VOID . IDEN '(' para_in ')' compound  (107)
+	func_def : VOID . IDEN '(' para_in ')' compound  (108)
 
 	IDEN  shift 27
 	.  error
@@ -360,7 +361,7 @@ state 16
 state 17
 	extdef : type . IDEN '(' para_in ')' ';'  (26)
 	extdef : type . iden_list_init ';'  (29)
-	func_def : type . IDEN '(' para_in ')' compound  (106)
+	func_def : type . IDEN '(' para_in ')' compound  (107)
 
 	IDEN  shift 30
 	.  error
@@ -410,7 +411,7 @@ state 22
 	iden_list_init : IDEN .  (18)
 	iden_list_init : IDEN . indexs_dec array_init  (19)
 	iden_list_init : IDEN . indexs_dec  (20)
-	first_func_def : type IDEN . '(' para_in ')' compound  (104)
+	first_func_def : type IDEN . '(' para_in ')' compound  (105)
 
 	'('  shift 33
 	'='  shift 34
@@ -437,14 +438,14 @@ state 23
 
 state 24
 	extdef_no_func : VOID IDEN '(' . para_in ')' ';'  (10)
-	first_func_def : VOID IDEN '(' . para_in ')' compound  (105)
-	para_in : .  (119)
+	first_func_def : VOID IDEN '(' . para_in ')' compound  (106)
+	para_in : .  (120)
 
 	INT  shift 1
 	DOUBLE  shift 2
 	BOOL  shift 3
 	CHAR  shift 4
-	')'  reduce 119
+	')'  reduce 120
 
 	type  goto 41
 	para_in  goto 42
@@ -472,7 +473,7 @@ state 26
 
 state 27
 	extdef : VOID IDEN . '(' para_in ')' ';'  (27)
-	func_def : VOID IDEN . '(' para_in ')' compound  (107)
+	func_def : VOID IDEN . '(' para_in ')' compound  (108)
 
 	'('  shift 49
 	.  error
@@ -499,7 +500,7 @@ state 30
 	iden_list_init : IDEN . indexs_dec array_init  (19)
 	iden_list_init : IDEN . indexs_dec  (20)
 	extdef : type IDEN . '(' para_in ')' ';'  (26)
-	func_def : type IDEN . '(' para_in ')' compound  (106)
+	func_def : type IDEN . '(' para_in ')' compound  (107)
 
 	'('  shift 51
 	'='  shift 34
@@ -543,14 +544,14 @@ state 32
 
 state 33
 	extdef_no_func : type IDEN '(' . para_in ')' ';'  (9)
-	first_func_def : type IDEN '(' . para_in ')' compound  (104)
-	para_in : .  (119)
+	first_func_def : type IDEN '(' . para_in ')' compound  (105)
+	para_in : .  (120)
 
 	INT  shift 1
 	DOUBLE  shift 2
 	BOOL  shift 3
 	CHAR  shift 4
-	')'  reduce 119
+	')'  reduce 120
 
 	type  goto 41
 	para_in  goto 53
@@ -559,7 +560,7 @@ state 33
 
 
 state 34
-	init : '=' . expr_no_invoke  (117)
+	init : '=' . expr_no_invoke  (118)
 
 	IDEN  shift 54
 	STRING_LIT  shift 55
@@ -578,7 +579,7 @@ state 34
 
 
 state 35
-	index_dec : '[' . INT_LIT ']'  (127)
+	index_dec : '[' . INT_LIT ']'  (128)
 
 	INT_LIT  shift 66
 	.  error
@@ -593,7 +594,7 @@ state 36
 state 37
 	iden_list_init : IDEN indexs_dec . array_init  (19)
 	iden_list_init : IDEN indexs_dec .  (20)
-	indexs_dec : indexs_dec . index_dec  (125)
+	indexs_dec : indexs_dec . index_dec  (126)
 
 	'='  shift 67
 	'['  shift 35
@@ -605,9 +606,9 @@ state 37
 
 
 state 38
-	indexs_dec : index_dec .  (126)
+	indexs_dec : index_dec .  (127)
 
-	.  reduce 126
+	.  reduce 127
 
 
 state 39
@@ -627,8 +628,8 @@ state 40
 
 
 state 41
-	para : type . IDEN indexs_dec  (123)
-	para : type . IDEN  (124)
+	para : type . IDEN indexs_dec  (124)
+	para : type . IDEN  (125)
 
 	IDEN  shift 71
 	.  error
@@ -636,24 +637,24 @@ state 41
 
 state 42
 	extdef_no_func : VOID IDEN '(' para_in . ')' ';'  (10)
-	first_func_def : VOID IDEN '(' para_in . ')' compound  (105)
+	first_func_def : VOID IDEN '(' para_in . ')' compound  (106)
 
 	')'  shift 72
 	.  error
 
 
 state 43
-	para_in : paras .  (120)
-	paras : paras . ',' para  (121)
+	para_in : paras .  (121)
+	paras : paras . ',' para  (122)
 
 	','  shift 73
-	')'  reduce 120
+	')'  reduce 121
 
 
 state 44
-	paras : para .  (122)
+	paras : para .  (123)
 
-	.  reduce 122
+	.  reduce 123
 
 
 state 45
@@ -690,14 +691,14 @@ state 48
 
 state 49
 	extdef : VOID IDEN '(' . para_in ')' ';'  (27)
-	func_def : VOID IDEN '(' . para_in ')' compound  (107)
-	para_in : .  (119)
+	func_def : VOID IDEN '(' . para_in ')' compound  (108)
+	para_in : .  (120)
 
 	INT  shift 1
 	DOUBLE  shift 2
 	BOOL  shift 3
 	CHAR  shift 4
-	')'  reduce 119
+	')'  reduce 120
 
 	type  goto 41
 	para_in  goto 76
@@ -716,14 +717,14 @@ state 50
 
 state 51
 	extdef : type IDEN '(' . para_in ')' ';'  (26)
-	func_def : type IDEN '(' . para_in ')' compound  (106)
-	para_in : .  (119)
+	func_def : type IDEN '(' . para_in ')' compound  (107)
+	para_in : .  (120)
 
 	INT  shift 1
 	DOUBLE  shift 2
 	BOOL  shift 3
 	CHAR  shift 4
-	')'  reduce 119
+	')'  reduce 120
 
 	type  goto 41
 	para_in  goto 78
@@ -739,7 +740,7 @@ state 52
 
 state 53
 	extdef_no_func : type IDEN '(' para_in . ')' ';'  (9)
-	first_func_def : type IDEN '(' para_in . ')' compound  (104)
+	first_func_def : type IDEN '(' para_in . ')' compound  (105)
 
 	')'  shift 79
 	.  error
@@ -768,7 +769,6 @@ state 54
 	')'  reduce 6
 	';'  reduce 6
 	','  reduce 6
-	'='  reduce 6
 	'}'  reduce 6
 
 	indexs  goto 81
@@ -776,21 +776,21 @@ state 54
 
 
 state 55
-	literal : STRING_LIT .  (139)
+	literal : STRING_LIT .  (140)
 
-	.  reduce 139
+	.  reduce 140
 
 
 state 56
-	literal : INT_LIT .  (136)
+	literal : INT_LIT .  (137)
 
-	.  reduce 136
+	.  reduce 137
 
 
 state 57
-	literal : BOOL_LIT .  (138)
+	literal : BOOL_LIT .  (139)
 
-	.  reduce 138
+	.  reduce 139
 
 
 state 58
@@ -813,15 +813,15 @@ state 58
 
 
 state 59
-	literal : CHAR_LIT .  (135)
+	literal : CHAR_LIT .  (136)
 
-	.  reduce 135
+	.  reduce 136
 
 
 state 60
-	literal : DOUBLE_LIT .  (137)
+	literal : DOUBLE_LIT .  (138)
 
-	.  reduce 137
+	.  reduce 138
 
 
 state 61
@@ -908,7 +908,7 @@ state 65
 	expr_no_invoke : expr_no_invoke . NOTEQUAL expr_no_invoke  (74)
 	expr_no_invoke : expr_no_invoke . ANDAND expr_no_invoke  (76)
 	expr_no_invoke : expr_no_invoke . OROR expr_no_invoke  (77)
-	init : '=' expr_no_invoke .  (117)
+	init : '=' expr_no_invoke .  (118)
 
 	ANDAND  shift 88
 	OROR  shift 89
@@ -923,19 +923,19 @@ state 65
 	'*'  shift 98
 	'/'  shift 99
 	'%'  shift 100
-	';'  reduce 117
-	','  reduce 117
+	';'  reduce 118
+	','  reduce 118
 
 
 state 66
-	index_dec : '[' INT_LIT . ']'  (127)
+	index_dec : '[' INT_LIT . ']'  (128)
 
 	']'  shift 101
 	.  error
 
 
 state 67
-	array_init : '=' . '{' exprs_comma_no_invoke_x '}'  (118)
+	array_init : '=' . '{' exprs_comma_no_invoke_x '}'  (119)
 
 	'{'  shift 102
 	.  error
@@ -948,9 +948,9 @@ state 68
 
 
 state 69
-	indexs_dec : indexs_dec index_dec .  (125)
+	indexs_dec : indexs_dec index_dec .  (126)
 
-	.  reduce 125
+	.  reduce 126
 
 
 state 70
@@ -970,12 +970,12 @@ state 70
 
 
 state 71
-	para : type IDEN . indexs_dec  (123)
-	para : type IDEN .  (124)
+	para : type IDEN . indexs_dec  (124)
+	para : type IDEN .  (125)
 
 	'['  shift 35
-	')'  reduce 124
-	','  reduce 124
+	')'  reduce 125
+	','  reduce 125
 
 	indexs_dec  goto 105
 	index_dec  goto 38
@@ -983,7 +983,7 @@ state 71
 
 state 72
 	extdef_no_func : VOID IDEN '(' para_in ')' . ';'  (10)
-	first_func_def : VOID IDEN '(' para_in ')' . compound  (105)
+	first_func_def : VOID IDEN '(' para_in ')' . compound  (106)
 
 	';'  shift 106
 	'{'  shift 107
@@ -993,7 +993,7 @@ state 72
 
 
 state 73
-	paras : paras ',' . para  (121)
+	paras : paras ',' . para  (122)
 
 	INT  shift 1
 	DOUBLE  shift 2
@@ -1022,7 +1022,7 @@ state 75
 
 state 76
 	extdef : VOID IDEN '(' para_in . ')' ';'  (27)
-	func_def : VOID IDEN '(' para_in . ')' compound  (107)
+	func_def : VOID IDEN '(' para_in . ')' compound  (108)
 
 	')'  shift 111
 	.  error
@@ -1036,7 +1036,7 @@ state 77
 
 state 78
 	extdef : type IDEN '(' para_in . ')' ';'  (26)
-	func_def : type IDEN '(' para_in . ')' compound  (106)
+	func_def : type IDEN '(' para_in . ')' compound  (107)
 
 	')'  shift 112
 	.  error
@@ -1044,7 +1044,7 @@ state 78
 
 state 79
 	extdef_no_func : type IDEN '(' para_in ')' . ';'  (9)
-	first_func_def : type IDEN '(' para_in ')' . compound  (104)
+	first_func_def : type IDEN '(' para_in ')' . compound  (105)
 
 	';'  shift 113
 	'{'  shift 107
@@ -1054,7 +1054,7 @@ state 79
 
 
 state 80
-	index : '[' . expr ']'  (130)
+	index : '[' . expr ']'  (131)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -1074,7 +1074,7 @@ state 80
 
 state 81
 	var : IDEN indexs .  (5)
-	indexs : indexs . index  (128)
+	indexs : indexs . index  (129)
 
 	'['  shift 80
 	PLUSPLUS  reduce 5
@@ -1103,9 +1103,9 @@ state 81
 
 
 state 82
-	indexs : index .  (129)
+	indexs : index .  (130)
 
-	.  reduce 129
+	.  reduce 130
 
 
 state 83
@@ -1455,14 +1455,14 @@ state 100
 
 
 state 101
-	index_dec : '[' INT_LIT ']' .  (127)
+	index_dec : '[' INT_LIT ']' .  (128)
 
-	.  reduce 127
+	.  reduce 128
 
 
 state 102
-	array_init : '=' '{' . exprs_comma_no_invoke_x '}'  (118)
-	exprs_comma_no_invoke_x : .  (113)
+	array_init : '=' '{' . exprs_comma_no_invoke_x '}'  (119)
+	exprs_comma_no_invoke_x : .  (114)
 
 	IDEN  shift 54
 	STRING_LIT  shift 55
@@ -1473,7 +1473,7 @@ state 102
 	DOUBLE_LIT  shift 60
 	'-'  shift 61
 	'('  shift 62
-	'}'  reduce 113
+	'}'  reduce 114
 
 	literal  goto 63
 	var  goto 64
@@ -1491,7 +1491,7 @@ state 103
 state 104
 	iden_list_init : iden_list_init ',' IDEN indexs_dec . array_init  (15)
 	iden_list_init : iden_list_init ',' IDEN indexs_dec .  (16)
-	indexs_dec : indexs_dec . index_dec  (125)
+	indexs_dec : indexs_dec . index_dec  (126)
 
 	'='  shift 67
 	'['  shift 35
@@ -1503,12 +1503,12 @@ state 104
 
 
 state 105
-	para : type IDEN indexs_dec .  (123)
-	indexs_dec : indexs_dec . index_dec  (125)
+	para : type IDEN indexs_dec .  (124)
+	indexs_dec : indexs_dec . index_dec  (126)
 
 	'['  shift 35
-	')'  reduce 123
-	','  reduce 123
+	')'  reduce 124
+	','  reduce 124
 
 	index_dec  goto 69
 
@@ -1520,7 +1520,7 @@ state 106
 
 
 state 107
-	compound : '{' . decs_x stmts_x '}'  (108)
+	compound : '{' . decs_x stmts_x '}'  (109)
 	decs_x : .  (31)
 
 	INT  shift 1
@@ -1546,15 +1546,15 @@ state 107
 
 
 state 108
-	first_func_def : VOID IDEN '(' para_in ')' compound .  (105)
+	first_func_def : VOID IDEN '(' para_in ')' compound .  (106)
 
-	.  reduce 105
+	.  reduce 106
 
 
 state 109
-	paras : paras ',' para .  (121)
+	paras : paras ',' para .  (122)
 
-	.  reduce 121
+	.  reduce 122
 
 
 state 110
@@ -1565,7 +1565,7 @@ state 110
 
 state 111
 	extdef : VOID IDEN '(' para_in ')' . ';'  (27)
-	func_def : VOID IDEN '(' para_in ')' . compound  (107)
+	func_def : VOID IDEN '(' para_in ')' . compound  (108)
 
 	';'  shift 146
 	'{'  shift 107
@@ -1576,7 +1576,7 @@ state 111
 
 state 112
 	extdef : type IDEN '(' para_in ')' . ';'  (26)
-	func_def : type IDEN '(' para_in ')' . compound  (106)
+	func_def : type IDEN '(' para_in ')' . compound  (107)
 
 	';'  shift 148
 	'{'  shift 107
@@ -1592,9 +1592,9 @@ state 113
 
 
 state 114
-	first_func_def : type IDEN '(' para_in ')' compound .  (104)
+	first_func_def : type IDEN '(' para_in ')' compound .  (105)
 
-	.  reduce 104
+	.  reduce 105
 
 
 state 115
@@ -1705,7 +1705,7 @@ state 120
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	index : '[' expr . ']'  (130)
+	index : '[' expr . ']'  (131)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -1751,9 +1751,9 @@ state 121
 
 
 state 122
-	indexs : indexs index .  (128)
+	indexs : indexs index .  (129)
 
-	.  reduce 128
+	.  reduce 129
 
 
 state 123
@@ -2183,7 +2183,7 @@ state 137
 	expr_no_invoke : expr_no_invoke . NOTEQUAL expr_no_invoke  (74)
 	expr_no_invoke : expr_no_invoke . ANDAND expr_no_invoke  (76)
 	expr_no_invoke : expr_no_invoke . OROR expr_no_invoke  (77)
-	exprs_comma_no_invoke : expr_no_invoke .  (116)
+	exprs_comma_no_invoke : expr_no_invoke .  (117)
 
 	ANDAND  shift 88
 	OROR  shift 89
@@ -2198,23 +2198,23 @@ state 137
 	'*'  shift 98
 	'/'  shift 99
 	'%'  shift 100
-	','  reduce 116
-	'}'  reduce 116
+	','  reduce 117
+	'}'  reduce 117
 
 
 state 138
-	array_init : '=' '{' exprs_comma_no_invoke_x . '}'  (118)
+	array_init : '=' '{' exprs_comma_no_invoke_x . '}'  (119)
 
 	'}'  shift 170
 	.  error
 
 
 state 139
-	exprs_comma_no_invoke_x : exprs_comma_no_invoke .  (114)
-	exprs_comma_no_invoke : exprs_comma_no_invoke . ',' expr_no_invoke  (115)
+	exprs_comma_no_invoke_x : exprs_comma_no_invoke .  (115)
+	exprs_comma_no_invoke : exprs_comma_no_invoke . ',' expr_no_invoke  (116)
 
 	','  shift 171
-	'}'  reduce 114
+	'}'  reduce 115
 
 
 state 140
@@ -2245,28 +2245,28 @@ state 142
 
 
 state 143
-	compound : '{' decs_x . stmts_x '}'  (108)
+	compound : '{' decs_x . stmts_x '}'  (109)
 	stmts_x : .  (80)
 
-	IDEN  shift 54
-	SWITCH  shift 175
-	IF  shift 176
-	FOR  shift 177
-	WHILE  shift 178
-	DO  shift 179
-	RETURN  shift 180
-	CONTINUE  shift 181
-	BREAK  shift 182
+	IDEN  shift 175
+	SWITCH  shift 176
+	IF  shift 177
+	FOR  shift 178
+	WHILE  shift 179
+	DO  shift 180
+	RETURN  shift 181
+	CONTINUE  shift 182
+	BREAK  shift 183
 	'}'  reduce 80
 
-	var  goto 183
-	stmts_x  goto 184
-	stmts  goto 185
-	stmt  goto 186
-	if_stmt  goto 187
-	while_stmt  goto 188
-	switch_stmt  goto 189
-	for_stmt  goto 190
+	var  goto 184
+	stmts_x  goto 185
+	stmts  goto 186
+	stmt  goto 187
+	if_stmt  goto 188
+	while_stmt  goto 189
+	switch_stmt  goto 190
+	for_stmt  goto 191
 
 
 state 144
@@ -2290,7 +2290,7 @@ state 144
 	'}'  reduce 32
 
 	type  goto 142
-	dec  goto 191
+	dec  goto 192
 
 
 state 145
@@ -2306,9 +2306,9 @@ state 146
 
 
 state 147
-	func_def : VOID IDEN '(' para_in ')' compound .  (107)
+	func_def : VOID IDEN '(' para_in ')' compound .  (108)
 
-	.  reduce 107
+	.  reduce 108
 
 
 state 148
@@ -2318,14 +2318,14 @@ state 148
 
 
 state 149
-	func_def : type IDEN '(' para_in ')' compound .  (106)
+	func_def : type IDEN '(' para_in ')' compound .  (107)
 
-	.  reduce 106
+	.  reduce 107
 
 
 state 150
 	expr : IDEN '(' . exprs_comma_x ')'  (43)
-	exprs_comma_x : .  (109)
+	exprs_comma_x : .  (110)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -2336,13 +2336,13 @@ state 150
 	DOUBLE_LIT  shift 60
 	'-'  shift 117
 	'('  shift 118
-	')'  reduce 109
+	')'  reduce 110
 
 	literal  goto 119
-	expr  goto 192
+	expr  goto 193
 	var  goto 121
-	exprs_comma_x  goto 193
-	exprs_comma  goto 194
+	exprs_comma_x  goto 194
+	exprs_comma  goto 195
 
 
 state 151
@@ -2428,7 +2428,7 @@ state 153
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  shift 195
+	')'  shift 196
 	.  error
 
 
@@ -2447,7 +2447,7 @@ state 154
 	.  error
 
 	literal  goto 119
-	expr  goto 196
+	expr  goto 197
 	var  goto 121
 
 
@@ -2466,7 +2466,7 @@ state 155
 	.  error
 
 	literal  goto 119
-	expr  goto 197
+	expr  goto 198
 	var  goto 121
 
 
@@ -2485,7 +2485,7 @@ state 156
 	.  error
 
 	literal  goto 119
-	expr  goto 198
+	expr  goto 199
 	var  goto 121
 
 
@@ -2504,7 +2504,7 @@ state 157
 	.  error
 
 	literal  goto 119
-	expr  goto 199
+	expr  goto 200
 	var  goto 121
 
 
@@ -2523,7 +2523,7 @@ state 158
 	.  error
 
 	literal  goto 119
-	expr  goto 200
+	expr  goto 201
 	var  goto 121
 
 
@@ -2542,7 +2542,7 @@ state 159
 	.  error
 
 	literal  goto 119
-	expr  goto 201
+	expr  goto 202
 	var  goto 121
 
 
@@ -2561,7 +2561,7 @@ state 160
 	.  error
 
 	literal  goto 119
-	expr  goto 202
+	expr  goto 203
 	var  goto 121
 
 
@@ -2580,7 +2580,7 @@ state 161
 	.  error
 
 	literal  goto 119
-	expr  goto 203
+	expr  goto 204
 	var  goto 121
 
 
@@ -2599,7 +2599,7 @@ state 162
 	.  error
 
 	literal  goto 119
-	expr  goto 204
+	expr  goto 205
 	var  goto 121
 
 
@@ -2618,7 +2618,7 @@ state 163
 	.  error
 
 	literal  goto 119
-	expr  goto 205
+	expr  goto 206
 	var  goto 121
 
 
@@ -2637,7 +2637,7 @@ state 164
 	.  error
 
 	literal  goto 119
-	expr  goto 206
+	expr  goto 207
 	var  goto 121
 
 
@@ -2656,7 +2656,7 @@ state 165
 	.  error
 
 	literal  goto 119
-	expr  goto 207
+	expr  goto 208
 	var  goto 121
 
 
@@ -2675,14 +2675,14 @@ state 166
 	.  error
 
 	literal  goto 119
-	expr  goto 208
+	expr  goto 209
 	var  goto 121
 
 
 state 167
-	index : '[' expr ']' .  (130)
+	index : '[' expr ']' .  (131)
 
-	.  reduce 130
+	.  reduce 131
 
 
 state 168
@@ -2698,13 +2698,13 @@ state 169
 
 
 state 170
-	array_init : '=' '{' exprs_comma_no_invoke_x '}' .  (118)
+	array_init : '=' '{' exprs_comma_no_invoke_x '}' .  (119)
 
-	.  reduce 118
+	.  reduce 119
 
 
 state 171
-	exprs_comma_no_invoke : exprs_comma_no_invoke ',' . expr_no_invoke  (115)
+	exprs_comma_no_invoke : exprs_comma_no_invoke ',' . expr_no_invoke  (116)
 
 	IDEN  shift 54
 	STRING_LIT  shift 55
@@ -2719,7 +2719,7 @@ state 171
 
 	literal  goto 63
 	var  goto 64
-	expr_no_invoke  goto 209
+	expr_no_invoke  goto 210
 
 
 state 172
@@ -2728,7 +2728,7 @@ state 172
 	IDEN  shift 25
 	.  error
 
-	const_iden_list  goto 210
+	const_iden_list  goto 211
 
 
 state 173
@@ -2754,51 +2754,64 @@ state 174
 	iden_list_init : iden_list_init . ',' IDEN indexs_dec  (16)
 	dec : type iden_list_init . ';'  (35)
 
-	';'  shift 211
+	';'  shift 212
 	','  shift 40
 	.  error
 
 
 state 175
-	switch_stmt : SWITCH . '(' IDEN ')' '{' cases default_x '}'  (97)
+	var : IDEN . indexs  (5)
+	var : IDEN .  (6)
+	stmt : IDEN . '(' exprs_comma_x ')' ';'  (89)
 
-	'('  shift 212
-	.  error
+	'('  shift 213
+	'['  shift 80
+	'='  reduce 6
+
+	indexs  goto 81
+	index  goto 82
 
 
 state 176
-	if_stmt : IF . '(' expr ')' compound ELSE compound  (92)
-	if_stmt : IF . '(' expr ')' compound  (93)
-
-	'('  shift 213
-	.  error
-
-
-state 177
-	for_stmt : FOR . '(' expr_x ';' expr_x ';' expr_x ')' compound  (96)
+	switch_stmt : SWITCH . '(' IDEN ')' '{' cases default_x '}'  (98)
 
 	'('  shift 214
 	.  error
 
 
-state 178
-	while_stmt : WHILE . '(' expr ')' compound  (94)
+state 177
+	if_stmt : IF . '(' expr ')' compound ELSE compound  (93)
+	if_stmt : IF . '(' expr ')' compound  (94)
 
 	'('  shift 215
 	.  error
 
 
+state 178
+	for_stmt : FOR . '(' expr_x ';' expr_x ';' expr_x ')' compound  (97)
+
+	'('  shift 216
+	.  error
+
+
 state 179
-	while_stmt : DO . compound WHILE '(' expr ')' ';'  (95)
+	while_stmt : WHILE . '(' expr ')' compound  (95)
+
+	'('  shift 217
+	.  error
+
+
+state 180
+	while_stmt : DO . compound WHILE '(' expr ')' ';'  (96)
 
 	'{'  shift 107
 	.  error
 
-	compound  goto 216
+	compound  goto 218
 
 
-state 180
-	stmt : RETURN . expr ';'  (89)
+state 181
+	stmt : RETURN . expr ';'  (90)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -2812,100 +2825,100 @@ state 180
 	.  error
 
 	literal  goto 119
-	expr  goto 217
+	expr  goto 219
 	var  goto 121
 
 
-state 181
-	stmt : CONTINUE . ';'  (91)
-
-	';'  shift 218
-	.  error
-
-
 state 182
-	stmt : BREAK . ';'  (90)
+	stmt : CONTINUE . ';'  (92)
 
-	';'  shift 219
+	';'  shift 220
 	.  error
 
 
 state 183
-	stmt : var . '=' expr ';'  (84)
+	stmt : BREAK . ';'  (91)
 
-	'='  shift 220
+	';'  shift 221
 	.  error
 
 
 state 184
-	compound : '{' decs_x stmts_x . '}'  (108)
+	stmt : var . '=' expr ';'  (84)
 
-	'}'  shift 221
+	'='  shift 222
 	.  error
 
 
 state 185
+	compound : '{' decs_x stmts_x . '}'  (109)
+
+	'}'  shift 223
+	.  error
+
+
+state 186
 	stmts_x : stmts .  (81)
 	stmts : stmts . stmt  (82)
 
-	IDEN  shift 54
-	SWITCH  shift 175
-	IF  shift 176
-	FOR  shift 177
-	WHILE  shift 178
-	DO  shift 179
-	RETURN  shift 180
-	CONTINUE  shift 181
-	BREAK  shift 182
+	IDEN  shift 175
+	SWITCH  shift 176
+	IF  shift 177
+	FOR  shift 178
+	WHILE  shift 179
+	DO  shift 180
+	RETURN  shift 181
+	CONTINUE  shift 182
+	BREAK  shift 183
 	CASE  reduce 81
 	DEFAULT  reduce 81
 	'}'  reduce 81
 
-	var  goto 183
-	stmt  goto 222
-	if_stmt  goto 187
-	while_stmt  goto 188
-	switch_stmt  goto 189
-	for_stmt  goto 190
+	var  goto 184
+	stmt  goto 224
+	if_stmt  goto 188
+	while_stmt  goto 189
+	switch_stmt  goto 190
+	for_stmt  goto 191
 
 
-state 186
+state 187
 	stmts : stmt .  (83)
 
 	.  reduce 83
 
 
-state 187
+state 188
 	stmt : if_stmt .  (85)
 
 	.  reduce 85
 
 
-state 188
+state 189
 	stmt : while_stmt .  (86)
 
 	.  reduce 86
 
 
-state 189
+state 190
 	stmt : switch_stmt .  (87)
 
 	.  reduce 87
 
 
-state 190
+state 191
 	stmt : for_stmt .  (88)
 
 	.  reduce 88
 
 
-state 191
+state 192
 	decs : decs dec .  (33)
 
 	.  reduce 33
 
 
-state 192
+state 193
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -2919,7 +2932,7 @@ state 192
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	exprs_comma : expr .  (112)
+	exprs_comma : expr .  (113)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -2934,32 +2947,32 @@ state 192
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  reduce 112
-	','  reduce 112
-
-
-state 193
-	expr : IDEN '(' exprs_comma_x . ')'  (43)
-
-	')'  shift 223
-	.  error
+	')'  reduce 113
+	','  reduce 113
 
 
 state 194
-	exprs_comma_x : exprs_comma .  (110)
-	exprs_comma : exprs_comma . ',' expr  (111)
+	expr : IDEN '(' exprs_comma_x . ')'  (43)
 
-	','  shift 224
-	')'  reduce 110
+	')'  shift 225
+	.  error
 
 
 state 195
+	exprs_comma_x : exprs_comma .  (111)
+	exprs_comma : exprs_comma . ',' expr  (112)
+
+	','  shift 226
+	')'  reduce 111
+
+
+state 196
 	expr : '(' expr ')' .  (59)
 
 	.  reduce 59
 
 
-state 196
+state 197
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -2994,7 +3007,7 @@ state 196
 	']'  reduce 56
 
 
-state 197
+state 198
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3029,7 +3042,7 @@ state 197
 	']'  reduce 57
 
 
-state 198
+state 199
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3064,7 +3077,7 @@ state 198
 	']'  reduce 51
 
 
-state 199
+state 200
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3099,7 +3112,7 @@ state 199
 	']'  reduce 52
 
 
-state 200
+state 201
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3134,7 +3147,7 @@ state 200
 	']'  reduce 53
 
 
-state 201
+state 202
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3169,7 +3182,7 @@ state 201
 	']'  reduce 54
 
 
-state 202
+state 203
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3204,7 +3217,7 @@ state 202
 	']'  reduce 49
 
 
-state 203
+state 204
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3239,7 +3252,7 @@ state 203
 	']'  reduce 50
 
 
-state 204
+state 205
 	expr : expr . '+' expr  (44)
 	expr : expr '+' expr .  (44)
 	expr : expr . '-' expr  (45)
@@ -3274,7 +3287,7 @@ state 204
 	']'  reduce 44
 
 
-state 205
+state 206
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr '-' expr .  (45)
@@ -3309,7 +3322,7 @@ state 205
 	']'  reduce 45
 
 
-state 206
+state 207
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3328,7 +3341,7 @@ state 206
 	.  reduce 46
 
 
-state 207
+state 208
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3347,7 +3360,7 @@ state 207
 	.  reduce 47
 
 
-state 208
+state 209
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3366,7 +3379,7 @@ state 208
 	.  reduce 48
 
 
-state 209
+state 210
 	expr_no_invoke : expr_no_invoke . '+' expr_no_invoke  (64)
 	expr_no_invoke : expr_no_invoke . '-' expr_no_invoke  (65)
 	expr_no_invoke : expr_no_invoke . '*' expr_no_invoke  (66)
@@ -3380,7 +3393,7 @@ state 209
 	expr_no_invoke : expr_no_invoke . NOTEQUAL expr_no_invoke  (74)
 	expr_no_invoke : expr_no_invoke . ANDAND expr_no_invoke  (76)
 	expr_no_invoke : expr_no_invoke . OROR expr_no_invoke  (77)
-	exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke .  (115)
+	exprs_comma_no_invoke : exprs_comma_no_invoke ',' expr_no_invoke .  (116)
 
 	ANDAND  shift 88
 	OROR  shift 89
@@ -3395,35 +3408,28 @@ state 209
 	'*'  shift 98
 	'/'  shift 99
 	'%'  shift 100
-	','  reduce 115
-	'}'  reduce 115
+	','  reduce 116
+	'}'  reduce 116
 
 
-state 210
+state 211
 	const_iden_list : const_iden_list . ',' IDEN const_init  (21)
 	dec : CONST type const_iden_list . ';'  (36)
 
-	';'  shift 225
+	';'  shift 227
 	','  shift 48
 	.  error
 
 
-state 211
+state 212
 	dec : type iden_list_init ';' .  (35)
 
 	.  reduce 35
 
 
-state 212
-	switch_stmt : SWITCH '(' . IDEN ')' '{' cases default_x '}'  (97)
-
-	IDEN  shift 226
-	.  error
-
-
 state 213
-	if_stmt : IF '(' . expr ')' compound ELSE compound  (92)
-	if_stmt : IF '(' . expr ')' compound  (93)
+	stmt : IDEN '(' . exprs_comma_x ')' ';'  (89)
+	exprs_comma_x : .  (110)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -3434,36 +3440,25 @@ state 213
 	DOUBLE_LIT  shift 60
 	'-'  shift 117
 	'('  shift 118
-	.  error
+	')'  reduce 110
 
 	literal  goto 119
-	expr  goto 227
+	expr  goto 193
 	var  goto 121
+	exprs_comma_x  goto 228
+	exprs_comma  goto 195
 
 
 state 214
-	for_stmt : FOR '(' . expr_x ';' expr_x ';' expr_x ')' compound  (96)
-	expr_x : .  (37)
+	switch_stmt : SWITCH '(' . IDEN ')' '{' cases default_x '}'  (98)
 
-	IDEN  shift 115
-	STRING_LIT  shift 55
-	INT_LIT  shift 56
-	BOOL_LIT  shift 57
-	NOT  shift 116
-	CHAR_LIT  shift 59
-	DOUBLE_LIT  shift 60
-	'-'  shift 117
-	'('  shift 118
-	';'  reduce 37
-
-	literal  goto 119
-	expr  goto 228
-	var  goto 121
-	expr_x  goto 229
+	IDEN  shift 229
+	.  error
 
 
 state 215
-	while_stmt : WHILE '(' . expr ')' compound  (94)
+	if_stmt : IF '(' . expr ')' compound ELSE compound  (93)
+	if_stmt : IF '(' . expr ')' compound  (94)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -3482,59 +3477,28 @@ state 215
 
 
 state 216
-	while_stmt : DO compound . WHILE '(' expr ')' ';'  (95)
+	for_stmt : FOR '(' . expr_x ';' expr_x ';' expr_x ')' compound  (97)
+	expr_x : .  (37)
 
-	WHILE  shift 231
-	.  error
+	IDEN  shift 115
+	STRING_LIT  shift 55
+	INT_LIT  shift 56
+	BOOL_LIT  shift 57
+	NOT  shift 116
+	CHAR_LIT  shift 59
+	DOUBLE_LIT  shift 60
+	'-'  shift 117
+	'('  shift 118
+	';'  reduce 37
+
+	literal  goto 119
+	expr  goto 231
+	var  goto 121
+	expr_x  goto 232
 
 
 state 217
-	expr : expr . '+' expr  (44)
-	expr : expr . '-' expr  (45)
-	expr : expr . '*' expr  (46)
-	expr : expr . '/' expr  (47)
-	expr : expr . '%' expr  (48)
-	expr : expr . '>' expr  (49)
-	expr : expr . '<' expr  (50)
-	expr : expr . GE expr  (51)
-	expr : expr . LE expr  (52)
-	expr : expr . EQUAL expr  (53)
-	expr : expr . NOTEQUAL expr  (54)
-	expr : expr . ANDAND expr  (56)
-	expr : expr . OROR expr  (57)
-	stmt : RETURN expr . ';'  (89)
-
-	ANDAND  shift 154
-	OROR  shift 155
-	GE  shift 156
-	LE  shift 157
-	EQUAL  shift 158
-	NOTEQUAL  shift 159
-	'>'  shift 160
-	'<'  shift 161
-	'+'  shift 162
-	'-'  shift 163
-	'*'  shift 164
-	'/'  shift 165
-	'%'  shift 166
-	';'  shift 232
-	.  error
-
-
-state 218
-	stmt : CONTINUE ';' .  (91)
-
-	.  reduce 91
-
-
-state 219
-	stmt : BREAK ';' .  (90)
-
-	.  reduce 90
-
-
-state 220
-	stmt : var '=' . expr ';'  (84)
+	while_stmt : WHILE '(' . expr ')' compound  (95)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -3552,57 +3516,14 @@ state 220
 	var  goto 121
 
 
-state 221
-	compound : '{' decs_x stmts_x '}' .  (108)
+state 218
+	while_stmt : DO compound . WHILE '(' expr ')' ';'  (96)
 
-	.  reduce 108
-
-
-state 222
-	stmts : stmts stmt .  (82)
-
-	.  reduce 82
-
-
-state 223
-	expr : IDEN '(' exprs_comma_x ')' .  (43)
-
-	.  reduce 43
-
-
-state 224
-	exprs_comma : exprs_comma ',' . expr  (111)
-
-	IDEN  shift 115
-	STRING_LIT  shift 55
-	INT_LIT  shift 56
-	BOOL_LIT  shift 57
-	NOT  shift 116
-	CHAR_LIT  shift 59
-	DOUBLE_LIT  shift 60
-	'-'  shift 117
-	'('  shift 118
-	.  error
-
-	literal  goto 119
-	expr  goto 234
-	var  goto 121
-
-
-state 225
-	dec : CONST type const_iden_list ';' .  (36)
-
-	.  reduce 36
-
-
-state 226
-	switch_stmt : SWITCH '(' IDEN . ')' '{' cases default_x '}'  (97)
-
-	')'  shift 235
+	WHILE  shift 234
 	.  error
 
 
-state 227
+state 219
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3616,8 +3537,7 @@ state 227
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	if_stmt : IF '(' expr . ')' compound ELSE compound  (92)
-	if_stmt : IF '(' expr . ')' compound  (93)
+	stmt : RETURN expr . ';'  (90)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -3632,11 +3552,133 @@ state 227
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  shift 236
+	';'  shift 235
 	.  error
 
 
+state 220
+	stmt : CONTINUE ';' .  (92)
+
+	.  reduce 92
+
+
+state 221
+	stmt : BREAK ';' .  (91)
+
+	.  reduce 91
+
+
+state 222
+	stmt : var '=' . expr ';'  (84)
+
+	IDEN  shift 115
+	STRING_LIT  shift 55
+	INT_LIT  shift 56
+	BOOL_LIT  shift 57
+	NOT  shift 116
+	CHAR_LIT  shift 59
+	DOUBLE_LIT  shift 60
+	'-'  shift 117
+	'('  shift 118
+	.  error
+
+	literal  goto 119
+	expr  goto 236
+	var  goto 121
+
+
+state 223
+	compound : '{' decs_x stmts_x '}' .  (109)
+
+	.  reduce 109
+
+
+state 224
+	stmts : stmts stmt .  (82)
+
+	.  reduce 82
+
+
+state 225
+	expr : IDEN '(' exprs_comma_x ')' .  (43)
+
+	.  reduce 43
+
+
+state 226
+	exprs_comma : exprs_comma ',' . expr  (112)
+
+	IDEN  shift 115
+	STRING_LIT  shift 55
+	INT_LIT  shift 56
+	BOOL_LIT  shift 57
+	NOT  shift 116
+	CHAR_LIT  shift 59
+	DOUBLE_LIT  shift 60
+	'-'  shift 117
+	'('  shift 118
+	.  error
+
+	literal  goto 119
+	expr  goto 237
+	var  goto 121
+
+
+state 227
+	dec : CONST type const_iden_list ';' .  (36)
+
+	.  reduce 36
+
+
 state 228
+	stmt : IDEN '(' exprs_comma_x . ')' ';'  (89)
+
+	')'  shift 238
+	.  error
+
+
+state 229
+	switch_stmt : SWITCH '(' IDEN . ')' '{' cases default_x '}'  (98)
+
+	')'  shift 239
+	.  error
+
+
+state 230
+	expr : expr . '+' expr  (44)
+	expr : expr . '-' expr  (45)
+	expr : expr . '*' expr  (46)
+	expr : expr . '/' expr  (47)
+	expr : expr . '%' expr  (48)
+	expr : expr . '>' expr  (49)
+	expr : expr . '<' expr  (50)
+	expr : expr . GE expr  (51)
+	expr : expr . LE expr  (52)
+	expr : expr . EQUAL expr  (53)
+	expr : expr . NOTEQUAL expr  (54)
+	expr : expr . ANDAND expr  (56)
+	expr : expr . OROR expr  (57)
+	if_stmt : IF '(' expr . ')' compound ELSE compound  (93)
+	if_stmt : IF '(' expr . ')' compound  (94)
+
+	ANDAND  shift 154
+	OROR  shift 155
+	GE  shift 156
+	LE  shift 157
+	EQUAL  shift 158
+	NOTEQUAL  shift 159
+	'>'  shift 160
+	'<'  shift 161
+	'+'  shift 162
+	'-'  shift 163
+	'*'  shift 164
+	'/'  shift 165
+	'%'  shift 166
+	')'  shift 240
+	.  error
+
+
+state 231
 	expr_x : expr .  (38)
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
@@ -3669,14 +3711,14 @@ state 228
 	';'  reduce 38
 
 
-state 229
-	for_stmt : FOR '(' expr_x . ';' expr_x ';' expr_x ')' compound  (96)
+state 232
+	for_stmt : FOR '(' expr_x . ';' expr_x ';' expr_x ')' compound  (97)
 
-	';'  shift 237
+	';'  shift 241
 	.  error
 
 
-state 230
+state 233
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3690,7 +3732,7 @@ state 230
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	while_stmt : WHILE '(' expr . ')' compound  (94)
+	while_stmt : WHILE '(' expr . ')' compound  (95)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -3705,24 +3747,24 @@ state 230
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  shift 238
+	')'  shift 242
 	.  error
 
 
-state 231
-	while_stmt : DO compound WHILE . '(' expr ')' ';'  (95)
+state 234
+	while_stmt : DO compound WHILE . '(' expr ')' ';'  (96)
 
-	'('  shift 239
+	'('  shift 243
 	.  error
 
 
-state 232
-	stmt : RETURN expr ';' .  (89)
+state 235
+	stmt : RETURN expr ';' .  (90)
 
-	.  reduce 89
+	.  reduce 90
 
 
-state 233
+state 236
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3751,11 +3793,11 @@ state 233
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	';'  shift 240
+	';'  shift 244
 	.  error
 
 
-state 234
+state 237
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3769,7 +3811,7 @@ state 234
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	exprs_comma : exprs_comma ',' expr .  (111)
+	exprs_comma : exprs_comma ',' expr .  (112)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -3784,29 +3826,36 @@ state 234
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  reduce 111
-	','  reduce 111
+	')'  reduce 112
+	','  reduce 112
 
 
-state 235
-	switch_stmt : SWITCH '(' IDEN ')' . '{' cases default_x '}'  (97)
+state 238
+	stmt : IDEN '(' exprs_comma_x ')' . ';'  (89)
 
-	'{'  shift 241
+	';'  shift 245
 	.  error
 
 
-state 236
-	if_stmt : IF '(' expr ')' . compound ELSE compound  (92)
-	if_stmt : IF '(' expr ')' . compound  (93)
+state 239
+	switch_stmt : SWITCH '(' IDEN ')' . '{' cases default_x '}'  (98)
+
+	'{'  shift 246
+	.  error
+
+
+state 240
+	if_stmt : IF '(' expr ')' . compound ELSE compound  (93)
+	if_stmt : IF '(' expr ')' . compound  (94)
 
 	'{'  shift 107
 	.  error
 
-	compound  goto 242
+	compound  goto 247
 
 
-state 237
-	for_stmt : FOR '(' expr_x ';' . expr_x ';' expr_x ')' compound  (96)
+state 241
+	for_stmt : FOR '(' expr_x ';' . expr_x ';' expr_x ')' compound  (97)
 	expr_x : .  (37)
 
 	IDEN  shift 115
@@ -3821,22 +3870,22 @@ state 237
 	';'  reduce 37
 
 	literal  goto 119
-	expr  goto 228
+	expr  goto 231
 	var  goto 121
-	expr_x  goto 243
+	expr_x  goto 248
 
 
-state 238
-	while_stmt : WHILE '(' expr ')' . compound  (94)
+state 242
+	while_stmt : WHILE '(' expr ')' . compound  (95)
 
 	'{'  shift 107
 	.  error
 
-	compound  goto 244
+	compound  goto 249
 
 
-state 239
-	while_stmt : DO compound WHILE '(' . expr ')' ';'  (95)
+state 243
+	while_stmt : DO compound WHILE '(' . expr ')' ';'  (96)
 
 	IDEN  shift 115
 	STRING_LIT  shift 55
@@ -3850,59 +3899,65 @@ state 239
 	.  error
 
 	literal  goto 119
-	expr  goto 245
+	expr  goto 250
 	var  goto 121
 
 
-state 240
+state 244
 	stmt : var '=' expr ';' .  (84)
 
 	.  reduce 84
 
 
-state 241
-	switch_stmt : SWITCH '(' IDEN ')' '{' . cases default_x '}'  (97)
-
-	CASE  shift 246
-	.  error
-
-	cases  goto 247
-	case  goto 248
-
-
-state 242
-	if_stmt : IF '(' expr ')' compound . ELSE compound  (92)
-	if_stmt : IF '(' expr ')' compound .  (93)
-
-	ELSE  shift 249
-	IDEN  reduce 93
-	SWITCH  reduce 93
-	CASE  reduce 93
-	DEFAULT  reduce 93
-	IF  reduce 93
-	FOR  reduce 93
-	WHILE  reduce 93
-	DO  reduce 93
-	RETURN  reduce 93
-	CONTINUE  reduce 93
-	BREAK  reduce 93
-	'}'  reduce 93
-
-
-state 243
-	for_stmt : FOR '(' expr_x ';' expr_x . ';' expr_x ')' compound  (96)
-
-	';'  shift 250
-	.  error
-
-
-state 244
-	while_stmt : WHILE '(' expr ')' compound .  (94)
-
-	.  reduce 94
-
-
 state 245
+	stmt : IDEN '(' exprs_comma_x ')' ';' .  (89)
+
+	.  reduce 89
+
+
+state 246
+	switch_stmt : SWITCH '(' IDEN ')' '{' . cases default_x '}'  (98)
+
+	CASE  shift 251
+	.  error
+
+	cases  goto 252
+	case  goto 253
+
+
+state 247
+	if_stmt : IF '(' expr ')' compound . ELSE compound  (93)
+	if_stmt : IF '(' expr ')' compound .  (94)
+
+	ELSE  shift 254
+	IDEN  reduce 94
+	SWITCH  reduce 94
+	CASE  reduce 94
+	DEFAULT  reduce 94
+	IF  reduce 94
+	FOR  reduce 94
+	WHILE  reduce 94
+	DO  reduce 94
+	RETURN  reduce 94
+	CONTINUE  reduce 94
+	BREAK  reduce 94
+	'}'  reduce 94
+
+
+state 248
+	for_stmt : FOR '(' expr_x ';' expr_x . ';' expr_x ')' compound  (97)
+
+	';'  shift 255
+	.  error
+
+
+state 249
+	while_stmt : WHILE '(' expr ')' compound .  (95)
+
+	.  reduce 95
+
+
+state 250
 	expr : expr . '+' expr  (44)
 	expr : expr . '-' expr  (45)
 	expr : expr . '*' expr  (46)
@@ -3916,7 +3971,7 @@ state 245
 	expr : expr . NOTEQUAL expr  (54)
 	expr : expr . ANDAND expr  (56)
 	expr : expr . OROR expr  (57)
-	while_stmt : DO compound WHILE '(' expr . ')' ';'  (95)
+	while_stmt : DO compound WHILE '(' expr . ')' ';'  (96)
 
 	ANDAND  shift 154
 	OROR  shift 155
@@ -3931,49 +3986,49 @@ state 245
 	'*'  shift 164
 	'/'  shift 165
 	'%'  shift 166
-	')'  shift 251
+	')'  shift 256
 	.  error
 
 
-state 246
-	case : CASE . CHAR_LIT ':' stmts_x  (100)
-	case : CASE . INT_LIT ':' stmts_x  (101)
+state 251
+	case : CASE . CHAR_LIT ':' stmts_x  (101)
+	case : CASE . INT_LIT ':' stmts_x  (102)
 
-	INT_LIT  shift 252
-	CHAR_LIT  shift 253
+	INT_LIT  shift 257
+	CHAR_LIT  shift 258
 	.  error
 
 
-state 247
-	switch_stmt : SWITCH '(' IDEN ')' '{' cases . default_x '}'  (97)
-	cases : cases . case  (98)
-	default_x : .  (102)
+state 252
+	switch_stmt : SWITCH '(' IDEN ')' '{' cases . default_x '}'  (98)
+	cases : cases . case  (99)
+	default_x : .  (103)
 
-	CASE  shift 246
-	DEFAULT  shift 254
-	'}'  reduce 102
+	CASE  shift 251
+	DEFAULT  shift 259
+	'}'  reduce 103
 
-	default_x  goto 255
-	case  goto 256
-
-
-state 248
-	cases : case .  (99)
-
-	.  reduce 99
+	default_x  goto 260
+	case  goto 261
 
 
-state 249
-	if_stmt : IF '(' expr ')' compound ELSE . compound  (92)
+state 253
+	cases : case .  (100)
+
+	.  reduce 100
+
+
+state 254
+	if_stmt : IF '(' expr ')' compound ELSE . compound  (93)
 
 	'{'  shift 107
 	.  error
 
-	compound  goto 257
+	compound  goto 262
 
 
-state 250
-	for_stmt : FOR '(' expr_x ';' expr_x ';' . expr_x ')' compound  (96)
+state 255
+	for_stmt : FOR '(' expr_x ';' expr_x ';' . expr_x ')' compound  (97)
 	expr_x : .  (37)
 
 	IDEN  shift 115
@@ -3988,188 +4043,188 @@ state 250
 	')'  reduce 37
 
 	literal  goto 119
-	expr  goto 228
+	expr  goto 231
 	var  goto 121
-	expr_x  goto 258
-
-
-state 251
-	while_stmt : DO compound WHILE '(' expr ')' . ';'  (95)
-
-	';'  shift 259
-	.  error
-
-
-state 252
-	case : CASE INT_LIT . ':' stmts_x  (101)
-
-	':'  shift 260
-	.  error
-
-
-state 253
-	case : CASE CHAR_LIT . ':' stmts_x  (100)
-
-	':'  shift 261
-	.  error
-
-
-state 254
-	default_x : DEFAULT . ':' stmts_x  (103)
-
-	':'  shift 262
-	.  error
-
-
-state 255
-	switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x . '}'  (97)
-
-	'}'  shift 263
-	.  error
+	expr_x  goto 263
 
 
 state 256
-	cases : cases case .  (98)
+	while_stmt : DO compound WHILE '(' expr ')' . ';'  (96)
 
-	.  reduce 98
+	';'  shift 264
+	.  error
 
 
 state 257
-	if_stmt : IF '(' expr ')' compound ELSE compound .  (92)
+	case : CASE INT_LIT . ':' stmts_x  (102)
 
-	.  reduce 92
+	':'  shift 265
+	.  error
 
 
 state 258
-	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x . ')' compound  (96)
+	case : CASE CHAR_LIT . ':' stmts_x  (101)
 
-	')'  shift 264
+	':'  shift 266
 	.  error
 
 
 state 259
-	while_stmt : DO compound WHILE '(' expr ')' ';' .  (95)
+	default_x : DEFAULT . ':' stmts_x  (104)
 
-	.  reduce 95
+	':'  shift 267
+	.  error
 
 
 state 260
-	case : CASE INT_LIT ':' . stmts_x  (101)
-	stmts_x : .  (80)
+	switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x . '}'  (98)
 
-	IDEN  shift 54
-	SWITCH  shift 175
-	IF  shift 176
-	FOR  shift 177
-	WHILE  shift 178
-	DO  shift 179
-	RETURN  shift 180
-	CONTINUE  shift 181
-	BREAK  shift 182
-	CASE  reduce 80
-	DEFAULT  reduce 80
-	'}'  reduce 80
-
-	var  goto 183
-	stmts_x  goto 265
-	stmts  goto 185
-	stmt  goto 186
-	if_stmt  goto 187
-	while_stmt  goto 188
-	switch_stmt  goto 189
-	for_stmt  goto 190
+	'}'  shift 268
+	.  error
 
 
 state 261
-	case : CASE CHAR_LIT ':' . stmts_x  (100)
-	stmts_x : .  (80)
+	cases : cases case .  (99)
 
-	IDEN  shift 54
-	SWITCH  shift 175
-	IF  shift 176
-	FOR  shift 177
-	WHILE  shift 178
-	DO  shift 179
-	RETURN  shift 180
-	CONTINUE  shift 181
-	BREAK  shift 182
-	CASE  reduce 80
-	DEFAULT  reduce 80
-	'}'  reduce 80
-
-	var  goto 183
-	stmts_x  goto 266
-	stmts  goto 185
-	stmt  goto 186
-	if_stmt  goto 187
-	while_stmt  goto 188
-	switch_stmt  goto 189
-	for_stmt  goto 190
+	.  reduce 99
 
 
 state 262
-	default_x : DEFAULT ':' . stmts_x  (103)
-	stmts_x : .  (80)
+	if_stmt : IF '(' expr ')' compound ELSE compound .  (93)
 
-	IDEN  shift 54
-	SWITCH  shift 175
-	IF  shift 176
-	FOR  shift 177
-	WHILE  shift 178
-	DO  shift 179
-	RETURN  shift 180
-	CONTINUE  shift 181
-	BREAK  shift 182
-	'}'  reduce 80
-
-	var  goto 183
-	stmts_x  goto 267
-	stmts  goto 185
-	stmt  goto 186
-	if_stmt  goto 187
-	while_stmt  goto 188
-	switch_stmt  goto 189
-	for_stmt  goto 190
+	.  reduce 93
 
 
 state 263
-	switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x '}' .  (97)
+	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x . ')' compound  (97)
 
-	.  reduce 97
+	')'  shift 269
+	.  error
 
 
 state 264
-	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' . compound  (96)
-
-	'{'  shift 107
-	.  error
-
-	compound  goto 268
-
-
-state 265
-	case : CASE INT_LIT ':' stmts_x .  (101)
-
-	.  reduce 101
-
-
-state 266
-	case : CASE CHAR_LIT ':' stmts_x .  (100)
-
-	.  reduce 100
-
-
-state 267
-	default_x : DEFAULT ':' stmts_x .  (103)
-
-	.  reduce 103
-
-
-state 268
-	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' compound .  (96)
+	while_stmt : DO compound WHILE '(' expr ')' ';' .  (96)
 
 	.  reduce 96
 
 
+state 265
+	case : CASE INT_LIT ':' . stmts_x  (102)
+	stmts_x : .  (80)
+
+	IDEN  shift 175
+	SWITCH  shift 176
+	IF  shift 177
+	FOR  shift 178
+	WHILE  shift 179
+	DO  shift 180
+	RETURN  shift 181
+	CONTINUE  shift 182
+	BREAK  shift 183
+	CASE  reduce 80
+	DEFAULT  reduce 80
+	'}'  reduce 80
+
+	var  goto 184
+	stmts_x  goto 270
+	stmts  goto 186
+	stmt  goto 187
+	if_stmt  goto 188
+	while_stmt  goto 189
+	switch_stmt  goto 190
+	for_stmt  goto 191
+
+
+state 266
+	case : CASE CHAR_LIT ':' . stmts_x  (101)
+	stmts_x : .  (80)
+
+	IDEN  shift 175
+	SWITCH  shift 176
+	IF  shift 177
+	FOR  shift 178
+	WHILE  shift 179
+	DO  shift 180
+	RETURN  shift 181
+	CONTINUE  shift 182
+	BREAK  shift 183
+	CASE  reduce 80
+	DEFAULT  reduce 80
+	'}'  reduce 80
+
+	var  goto 184
+	stmts_x  goto 271
+	stmts  goto 186
+	stmt  goto 187
+	if_stmt  goto 188
+	while_stmt  goto 189
+	switch_stmt  goto 190
+	for_stmt  goto 191
+
+
+state 267
+	default_x : DEFAULT ':' . stmts_x  (104)
+	stmts_x : .  (80)
+
+	IDEN  shift 175
+	SWITCH  shift 176
+	IF  shift 177
+	FOR  shift 178
+	WHILE  shift 179
+	DO  shift 180
+	RETURN  shift 181
+	CONTINUE  shift 182
+	BREAK  shift 183
+	'}'  reduce 80
+
+	var  goto 184
+	stmts_x  goto 272
+	stmts  goto 186
+	stmt  goto 187
+	if_stmt  goto 188
+	while_stmt  goto 189
+	switch_stmt  goto 190
+	for_stmt  goto 191
+
+
+state 268
+	switch_stmt : SWITCH '(' IDEN ')' '{' cases default_x '}' .  (98)
+
+	.  reduce 98
+
+
+state 269
+	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' . compound  (97)
+
+	'{'  shift 107
+	.  error
+
+	compound  goto 273
+
+
+state 270
+	case : CASE INT_LIT ':' stmts_x .  (102)
+
+	.  reduce 102
+
+
+state 271
+	case : CASE CHAR_LIT ':' stmts_x .  (101)
+
+	.  reduce 101
+
+
+state 272
+	default_x : DEFAULT ':' stmts_x .  (104)
+
+	.  reduce 104
+
+
+state 273
+	for_stmt : FOR '(' expr_x ';' expr_x ';' expr_x ')' compound .  (97)
+
+	.  reduce 97
+
+
 56 terminals, 44 nonterminals
-140 grammar rules, 269 states
+141 grammar rules, 274 states

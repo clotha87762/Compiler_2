@@ -159,29 +159,29 @@ ISUFIX	[uUlL]|(ll)|(LL)
 
 
 0{digit}+{ISUFIX}?				{/*printf("invalid integer!\n");*/Error();}
-[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lit.ival = atoi(yytext); return INT_LIT;}
-0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.lit.type = 0;  yylval.lit.ival = atoi(yytext); return INT_LIT;}
+[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.ival = atoi(yytext); return INT_LIT;}
+0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.ival = atoi(yytext); return INT_LIT;}
 
 
 {digit}+({alpha}|_)+		{Error();}
-({alpha}|_){VID}*		{PutToBuffer(yytext);PrintToken(ID,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
+({alpha}|_){VID}*		{PutToBuffer(yytext);PrintToken(ID,yytext); mstrcpy(yylval.sval,yytext);  return IDEN;}
 
 
-{digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?	{PutToBuffer(yytext);PrintToken(SCI,yytext); yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?	{PutToBuffer(yytext);PrintToken(SCI,yytext); yylval.dval = atof(yytext); return DOUBLE_LIT;}
 {digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+	{/*printf("SCI Error\n");*/Error(); }
-\.{digit}+[eE][+-]?{digit}+{FSUFIX}?		{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+\.{digit}+[eE][+-]?{digit}+{FSUFIX}?		{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
 \.{digit}+[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("SCI Error\n");*/Error();}
-{digit}+[eE][+-]?{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+[eE][+-]?{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
 {digit}+[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("SCI Error\n");*/Error();}
 
-{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
 {digit}+\.{digit}*{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
-\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.lit.type = 1;yylval.lit.dval = atof(yytext); return DOUBLE_LIT;}
+\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
 \.{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
 
 
 
-\'{CH}\'           {	PutToBuffer(yytext);PrintToken(CHARACTER,yytext);yylval.lit.type = 2;yylval.lit.cval = yytext[1]; return CHAR_LIT;}
+\'{CH}\'           {	PutToBuffer(yytext);PrintToken(CHARACTER,yytext);yylval.cval = yytext[1]; return CHAR_LIT;}
 L?\"{STRCH}*\"		{
 						PutToBuffer(yytext);
 						char* temp;
@@ -202,8 +202,8 @@ L?\"{STRCH}*\"		{
 							temp[i] = '\0';
 						}
 						PrintToken(STRING,temp);
-						yylval.lit.type = 3;
-						mstrcpy(yylval.lit.sval,temp);
+						//yylval.lit.type = 3;
+						mstrcpy(yylval.sval,temp);
 						return STRING_LIT;
 					}  
 L?\"/{STRCH}*		{/*printf("only one double-quote!\n");*/Error();}

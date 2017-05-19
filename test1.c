@@ -7,7 +7,7 @@ int main(){
     int cc = 123;
      break;  
     while(x>3){
- 	y = aa + bb;
+ 	y = aa + bb + func() ;
     }
     if(aa !=bb){
 	continue;
@@ -31,3 +31,4 @@ void func(int a, char c){
 
 
 }
+

@@ -4,7 +4,8 @@ int crazy()
 
 
 	int gg = ifunc;
-
+ 	char s = "";
+	int x = "" + "c"  / "12345" ;
 	//crazy();
 	if("that is carzy!!!@@@)@)@)@"){
 		switch (gg){

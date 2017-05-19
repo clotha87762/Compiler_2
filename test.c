@@ -8,7 +8,7 @@ void func(int a , int c  );
 
 int main(){
     int cc = 123;
-    
+    char c = 'c';    
     x = func(364543.123f + (3/8) , "wtf" , 0 , dd[4][7][9]) + func();
     h = func(a+a,c+c,100/b);
     

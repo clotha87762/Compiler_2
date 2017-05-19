@@ -6,6 +6,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "SymbolTable.h"
 #include "lit_type.h"
 
@@ -13,6 +14,8 @@ extern char* yytext;
 extern int lineCount;
 extern char lineBuffer[50000];
 char   *install_symbol();
+void mstrcpy(char * s1, char* s2);
+
 %}
 
 %start program
@@ -33,7 +36,7 @@ char   *install_symbol();
 %token <cval> CHAR_LIT 
 %token <dval> DOUBLE_LIT
 
-%type <lit_type> literal expr
+%type <lit> literal expr
 %type <sval> var
 
 %left <ival> OROR
@@ -46,12 +49,7 @@ char   *install_symbol();
 %left <ival> PLUSPLUS MINUSMINUS
 
 
-
-%{
-/* external function is defined here */
-void error();
-int TRACEON = 100;
-%}     
+ 
 
 
 
@@ -209,7 +207,7 @@ stmt: var '=' expr ';'    {}
   |  for_stmt      {}
   //| func_invoke     {}
   //| var  '=' IDEN '(' exprs_comma_x ')' ';'
-  //| IDEN '(' exprs_comma_x ')' ';'
+  | IDEN '(' exprs_comma_x ')' ';'
   | RETURN expr ';'   {}
   | BREAK ';'       {}
   | CONTINUE ';'    {}
@@ -327,7 +325,7 @@ literal: CHAR_LIT {}
      | INT_LIT    {}
      | DOUBLE_LIT  {}
      | BOOL_LIT    {}
-     | STRING_LIT  {}
+     | STRING_LIT  { }
      ;
 
 
@@ -356,4 +354,5 @@ void  yyerror(char* msg)
    fprintf( stderr, "*** syntax error\n"); 
    exit(-1); 
 }
+
 

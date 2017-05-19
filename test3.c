@@ -5,17 +5,18 @@ int xx[3] = {};
 
 
 void recur(int x);
-int main(){
+//int x[4][3] = { func() , 123};
+void main(){
 	//int x = 00123;
 	/*xx = recur({1,2,3});
 	*/
 	//void gg = "wtf";
-	char c ;
+	char c[5]  = {1};
 //	c = boooooo;
-	int ggyy[100]['c'];
+	
 	int array[5][6] = {'a',"",true+true};
 	while((gg+"rwqwe"/(true>=false) )){
-	   char tt[100] = "
+	   
 	   for(;;){
 		
 		if(false){
