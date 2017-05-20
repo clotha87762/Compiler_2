@@ -23,7 +23,7 @@ void PrintSrc();
 void PrintToken(PTYPE t,char* text);
 void PrintEOFSrc();
 void Error();
-void mstrcpy(char * s1, char* s2);
+char* mstrcpy( char* s2);
 
 
 %}
@@ -91,67 +91,67 @@ ISUFIX	[uUlL]|(ll)|(LL)
 "break"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return BREAK;}
 "continue"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CONTINUE;}
 "const"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CONST;}
-"true"		{PutToBuffer(yytext);PrintToken(KEY,yytext); yylval.lit.type = 4; yylval.lit.bval = 1;  return BOOL_LIT;}
-"false"		{PutToBuffer(yytext);PrintToken(KEY,yytext); yylval.lit.type = 4; yylval.lit.bval = 0; return BOOL_LIT;}
+"true"		{PutToBuffer(yytext);PrintToken(KEY,yytext);   return BOOL_LIT;}
+"false"		{PutToBuffer(yytext);PrintToken(KEY,yytext);  return BOOL_LIT;}
 "struct"		{PutToBuffer(yytext);PrintToken(KEY,yytext);  return STRUCT;}
 "case"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return CASE;}
 "default"		{PutToBuffer(yytext);PrintToken(KEY,yytext); return DEFAULT;}
 
-"clearerr"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"fclose"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext);return IDEN;}
-"fdopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext);return IDEN;}
-"feof"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"ferror"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext);return IDEN;}
-"fflush"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fgetc"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fgetpos"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fgets"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);  return IDEN;}
-"fileno"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fpurge"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fputc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext); return IDEN;}
-"fputs"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext);  return IDEN;}
-"fread"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"freopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fseek"	{PutToBuffer(yytext);PrintToken(KEY,yytext); mstrcpy(yylval.sval,yytext); return IDEN;}
-"fsetpos"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"ftell"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"fwrite"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"getc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"getchar"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"gets"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"getw"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"mktemp"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"perror"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"printf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"putc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"putchar"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"puts"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"putw"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"remove"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"rewind"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"scanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"setbuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"setbuffer"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"setlinebuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"setvbuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"sprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"sscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"strerror"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"sys_errlist"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"sys_nerr"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"tempnam"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"tmpfile"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"tmpnam"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"ungetc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vfprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vfscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vsprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
-"vsscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);mstrcpy(yylval.sval,yytext);return IDEN;}
+"clearerr"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fclose"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fdopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"feof"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"ferror"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fflush"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fgetc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fgetpos"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fgets"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fileno"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fpurge"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fputc"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fputs"	{PutToBuffer(yytext);PrintToken(KEY,yytext);   return IDEN;}
+"fread"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"freopen"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext); return IDEN;}
+"fseek"	{PutToBuffer(yytext);PrintToken(KEY,yytext);  return IDEN;}
+"fsetpos"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"ftell"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"fwrite"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"getc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"getchar"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"gets"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"getw"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"mktemp"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"perror"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"printf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"putc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"putchar"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"puts"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"putw"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"remove"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"rewind"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"scanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"setbuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"setbuffer"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"setlinebuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"setvbuf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"sprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"sscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"strerror"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"sys_errlist"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"sys_nerr"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"tempnam"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"tmpfile"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"tmpnam"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"ungetc"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vfprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vfscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vsprintf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
+"vsscanf"	{PutToBuffer(yytext);PrintToken(KEY,yytext);return IDEN;}
 
 
 
@@ -159,24 +159,24 @@ ISUFIX	[uUlL]|(ll)|(LL)
 
 
 0{digit}+{ISUFIX}?				{/*printf("invalid integer!\n");*/Error();}
-[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.ival = atoi(yytext); return INT_LIT;}
-0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext); yylval.ival = atoi(yytext); return INT_LIT;}
+[1-9]{digit}*{ISUFIX}?		{PutToBuffer(yytext);PrintToken(INTEGER,yytext);  return INT_LIT;}
+0{ISUFIX}?					{PutToBuffer(yytext);PrintToken(INTEGER,yytext);  return INT_LIT;}
 
 
 {digit}+({alpha}|_)+		{Error();}
-({alpha}|_){VID}*		{PutToBuffer(yytext);PrintToken(ID,yytext); mstrcpy(yylval.sval,yytext);  return IDEN;}
+({alpha}|_){VID}*		{PutToBuffer(yytext);PrintToken(ID,yytext);   return IDEN;}
 
 
-{digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?	{PutToBuffer(yytext);PrintToken(SCI,yytext); yylval.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?	{PutToBuffer(yytext);PrintToken(SCI,yytext);  return DOUBLE_LIT;}
 {digit}+\.{digit}*[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+	{/*printf("SCI Error\n");*/Error(); }
-\.{digit}+[eE][+-]?{digit}+{FSUFIX}?		{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
+\.{digit}+[eE][+-]?{digit}+{FSUFIX}?		{PutToBuffer(yytext);PrintToken(SCI,yytext); return DOUBLE_LIT;}
 \.{digit}+[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("SCI Error\n");*/Error();}
-{digit}+[eE][+-]?{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(SCI,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+[eE][+-]?{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(SCI,yytext); return DOUBLE_LIT;}
 {digit}+[eE][+-]?{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("SCI Error\n");*/Error();}
 
-{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
+{digit}+\.{digit}*{FSUFIX}?		{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext); return DOUBLE_LIT;}
 {digit}+\.{digit}*{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
-\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext);yylval.dval = atof(yytext); return DOUBLE_LIT;}
+\.{digit}+{FSUFIX}?			{PutToBuffer(yytext);PrintToken(L_DOUBLE,yytext); return DOUBLE_LIT;}
 \.{digit}+{FSUFIX}?(\.|_|{ad})+		{/*printf("double Error\n");*/Error();}
 
 
@@ -203,7 +203,7 @@ L?\"{STRCH}*\"		{
 						}
 						PrintToken(STRING,temp);
 						//yylval.lit.type = 3;
-						mstrcpy(yylval.sval,temp);
+						//mstrcpy(yylval.sval,temp);
 						return STRING_LIT;
 					}  
 L?\"/{STRCH}*		{/*printf("only one double-quote!\n");*/Error();}
@@ -326,7 +326,9 @@ void Error(){
 }
 
 
-void mstrcpy(char* s1, char* s2){
+char* mstrcpy( char* s2){
+	char* s1;
 	s1 = (char*) malloc(sizeof(char) * (strlen(s2)+10));
 	strcpy(s1,s2);
+	return s1;
 }
